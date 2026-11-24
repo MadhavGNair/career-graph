@@ -9,7 +9,6 @@ continue from the first unchecked box.
 - CLI entry point: `uv run careergraph --help`
 
 ## Hard rules
-- Never push, add remotes or use GitHub tooling. Commit locally after each phase.
 - No live LLM calls, no keys, no network in tests/evals/demo. Fake LLM + fixtures only.
 - Never write benchmark/eval/cost numbers into docs unless measured in-session; label fake-mode
   numbers as plumbing checks. Otherwise "not yet measured" + how to measure.
