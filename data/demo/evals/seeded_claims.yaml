@@ -1,0 +1,56 @@
+# Verifier gold set (hand-written, FICTIONAL). Each case: a claim, the evidence it cites, and the
+# expected label. "fabricated" cases contain facts absent from the evidence (seeded errors).
+cases:
+  - id: c01
+    claim: "Designed and operated an ML platform on Kubernetes serving 35 production models."
+    evidence: ["Designed and operated an ML platform on Kubernetes serving 35 production models with Python, MLflow and Airflow."]
+    expected: supported
+  - id: c02
+    claim: "Reduced model training costs by 38% by moving PyTorch training to AWS spot instances."
+    evidence: ["Reduced model training costs by 38% by moving PyTorch training jobs to spot instances on AWS."]
+    expected: supported
+  - id: c03
+    claim: "Reduced model training costs by 60% by moving PyTorch training to AWS spot instances."
+    evidence: ["Reduced model training costs by 38% by moving PyTorch training jobs to spot instances on AWS."]
+    expected: unsupported
+    fabricated: true
+  - id: c04
+    claim: "Led a 40-person machine learning organisation at Google and earned a PhD in 2015."
+    evidence: ["Mentored three engineers and ran the internal LLM evaluation guild."]
+    expected: unsupported
+    fabricated: true
+  - id: c05
+    claim: "Built a recommender system with PyTorch that increased basket size by 6% in an A/B test."
+    evidence: ["Built a recommender system with PyTorch that increased basket size by 6% in an A/B test."]
+    expected: supported
+  - id: c06
+    claim: "Built a fraud detection system with XGBoost for a bank."
+    evidence: ["Built a recommender system with PyTorch that increased basket size by 6% in an A/B test."]
+    expected: unsupported
+    fabricated: true
+  - id: c07
+    claim: "Developed demand forecasting models for 2,000 stores using time series methods."
+    evidence: ["Developed demand forecasting models for 2,000 stores using time series methods and Spark."]
+    expected: supported
+  - id: c08
+    claim: "Developed demand forecasting models for 20,000 stores using time series methods."
+    evidence: ["Developed demand forecasting models for 2,000 stores using time series methods and Spark."]
+    expected: unsupported
+    fabricated: true
+  - id: c09
+    claim: "Mentored three engineers."
+    evidence: ["Mentored three engineers and ran the internal LLM evaluation guild."]
+    expected: supported
+  - id: c10
+    claim: "Managed a team of twelve engineers and owned the department budget."
+    evidence: ["Mentored three engineers and ran the internal LLM evaluation guild."]
+    expected: unsupported
+    fabricated: true
+  - id: c11
+    claim: "Introduced CI/CD for models with GitHub Actions and Terraform."
+    evidence: ["Introduced CI/CD for models with GitHub Actions and Terraform, cutting release time from two weeks to one day."]
+    expected: supported
+  - id: c12
+    claim: "Built a retrieval-augmented generation assistant over 120,000 documents and won a company award for it."
+    evidence: ["Built a retrieval-augmented generation assistant over 120,000 internal documents using LangChain and a vector database, with an evaluation harness for answer quality."]
+    expected: partial

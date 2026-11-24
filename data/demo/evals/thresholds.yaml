@@ -1,0 +1,23 @@
+# Eval gates. CI fails if a metric drops below its threshold in FAKE mode.
+# Fake-mode metrics check pipeline logic (plumbing), not model quality. Set from measured
+# fake-mode results in this repo; see src/careergraph/evals/README.md for how to measure live.
+match:
+  # share of gold "approve" jobs that land on the shortlist
+  recall_at_shortlist: 0.0
+  # share of shortlisted jobs that are gold "approve"
+  precision_at_shortlist: 0.0
+  # probability a random approve job outscores a random reject job
+  ranking_auc: 0.0
+extraction:
+  # micro F1 of extracted must+nice skills vs gold
+  skills_f1: 0.0
+verifier:
+  # share of seeded fabricated claims labelled unsupported
+  fabricated_recall: 0.0
+  # share of all cases with the exact expected label
+  label_accuracy: 0.0
+injection:
+  # share of injection fixtures flagged
+  recall: 0.0
+  # share of flagged postings that really contain an injection
+  precision: 0.0
