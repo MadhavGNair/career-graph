@@ -15,10 +15,10 @@ Never push. No live LLM calls. Never fabricate numbers (see CLAUDE.md).
 - [x] CLAUDE.md, PLAN.md, root README usage section, config/ and profiles/ READMEs
 
 ## P1 Foundations
-- [ ] domain schemas + status enum
-- [ ] LLM factory (init_chat_model, json_schema structured output), fake LLM, budgets/cost tracking
-- [ ] skills normalisation, retrieval (BM25 + embeddings + RRF, hashing fallback, disk cache)
-- [ ] demo data: Sam Demo CV + 2 letters (.md, .tex), GitHub fixture (5 repos), ~30 postings (3 injection, 2 near-dup, 1 German), 5 company web fixtures, eval gold files
+- [x] domain schemas + status enum
+- [x] LLM factory (init_chat_model, json_schema structured output), fake LLM, budgets/cost tracking
+- [x] skills normalisation, retrieval (BM25 + embeddings + RRF, hashing fallback, disk cache)
+- [x] demo data: Sam Demo CV + 2 letters (.md, .tex), GitHub fixture (5 repos), ~30 postings (3 injection, 2 near-dup, 1 German), 5 company web fixtures, eval gold files
 
 ## P2 Profile
 - [ ] document parsers (pypdf, md/txt, tex stripping), GitHub adapter (SSRF-safe, cached)
