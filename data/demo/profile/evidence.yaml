@@ -1,0 +1,15 @@
+# Hand-edited evidence for the FICTIONAL demo user. Pinned items are always merged.
+items:
+  - id: ev-p001
+    # kind of evidence
+    kind: achievement
+    # the claim as it may be cited
+    text: "Holds a German language certificate at B1 level and uses German in daily work."
+    # skills shown
+    skills: [german]
+    # provenance
+    source_ref: "evidence.yaml"
+    # when
+    dates: "2023"
+    # never overwritten
+    pinned: true

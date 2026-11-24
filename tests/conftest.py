@@ -8,6 +8,7 @@ from pathlib import Path
 import pytest
 
 from careergraph.config import Settings
+from careergraph.skills import SkillNormalizer
 
 
 @pytest.fixture(autouse=True)
@@ -36,3 +37,12 @@ def make_settings(tmp_path: Path, **overrides: object) -> Settings:
 def settings(tmp_path: Path) -> Settings:
     """Isolated demo settings."""
     return make_settings(tmp_path)
+
+
+@pytest.fixture(scope="session")
+def skills() -> SkillNormalizer:
+    """Normaliser built from the shipped config/skills.yaml."""
+    from careergraph.config import REPO_ROOT, SkillsConfig, load_yaml_model
+    from careergraph.skills import SkillNormalizer
+
+    return SkillNormalizer(load_yaml_model(REPO_ROOT / "config" / "skills.yaml", SkillsConfig))

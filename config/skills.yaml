@@ -46,6 +46,11 @@ aliases:
   vector databases: [pgvector, faiss, qdrant, weaviate, pinecone]
   evaluation: [evals, llm evaluation, model evaluation]
   german: [deutsch]
+  c++: [cpp]
+  ros: [robot operating system]
+  operations research: [optimization, mixed integer programming]
+  react: [react.js, reactjs]
+  phd: [doctorate, ph.d.]
 
 # canonical skill -> related canonical skills. A related skill earns partial credit
 # (criteria.yaml related_skill_credit) when the exact one is missing. | mapping | {}
