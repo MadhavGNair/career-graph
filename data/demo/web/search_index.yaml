@@ -1,0 +1,14 @@
+# Fixture search results for the demo's tavily/brave providers (fictional). Keyed by company.
+Nimbus Analytics:
+  - {title: "About Nimbus Analytics", url: "https://nimbus-analytics.example/about", snippet: "Demand forecasting software for manufacturers."}
+  - {title: "Engineering at Nimbus", url: "https://nimbus-analytics.example/engineering", snippet: "Our ML platform runs on Kubernetes."}
+  - {title: "Nimbus Analytics private wiki", url: "https://nimbus-analytics.example/private/wiki", snippet: "Blocked by robots.txt."}
+Kestrel Health:
+  - {title: "About Kestrel Health", url: "https://kestrel-health.example/about", snippet: "Structured data from clinical notes."}
+  - {title: "Machine learning at Kestrel", url: "https://kestrel-health.example/blog/ml-at-kestrel", snippet: "Language models with clinician review."}
+Orbitly:
+  - {title: "About Orbitly", url: "https://orbitly.example/about", snippet: "Travel marketplace in Amsterdam."}
+Harborline Logistics:
+  - {title: "About Harborline", url: "https://harborline.example/about", snippet: "Freight route planning."}
+Fernway Energy:
+  - {title: "About Fernway Energy", url: "https://fernway-energy.example/about", snippet: "Renewable output forecasts."}

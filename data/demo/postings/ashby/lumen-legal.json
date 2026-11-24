@@ -1,0 +1,88 @@
+{
+  "apiVersion": "1",
+  "jobs": [
+    {
+      "id": "ac713bf6-30d0-5e02-bf40-4659403d6dfc",
+      "title": "LLM Applications Engineer",
+      "location": "Berlin, Germany",
+      "secondaryLocations": [],
+      "department": "Engineering",
+      "team": "Machine Learning",
+      "isListed": true,
+      "isRemote": true,
+      "workplaceType": "Hybrid",
+      "descriptionHtml": "<p>Lumen Legal builds contract-review tools used by law firms in the DACH region.</p><h3>What you'll do</h3><ul><li>Work closely with product and engineering to ship improvements every week.</li><li>Own your work from design document to production.</li></ul><h3>Requirements</h3><ul><li>Python.</li><li>LLM application development.</li><li>RAG pipelines.</li><li>LangChain.</li></ul><h3>Nice to have</h3><ul><li>Evaluation of LLM outputs.</li></ul><h3>Compensation</h3><p>€70,000 - €80,000 per year</p>",
+      "descriptionPlain": "Lumen Legal builds contract-review tools used by law firms in the DACH region.\n\nWhat you'll do:\n- Work closely with product and engineering to ship improvements every week.\n- Own your work from design document to production.\n\nRequirements:\n- Python.\n- LLM application development.\n- RAG pipelines.\n- LangChain.\n\nNice to have:\n- Evaluation of LLM outputs.",
+      "publishedAt": "2026-11-19T09:30:00+00:00",
+      "employmentType": "FullTime",
+      "address": {
+        "postalAddress": {
+          "addressLocality": "Berlin"
+        }
+      },
+      "jobUrl": "https://jobs.ashbyhq.com/lumen-legal/ac713bf6-30d0-5e02-bf40-4659403d6dfc",
+      "applyUrl": "https://jobs.ashbyhq.com/lumen-legal/ac713bf6-30d0-5e02-bf40-4659403d6dfc/application",
+      "shouldDisplayCompensationOnJobPostings": true,
+      "compensation": {
+        "compensationTierSummary": "€70K – €80K",
+        "scrapeableCompensationSalarySummary": "€70K – €80K",
+        "compensationTiers": [],
+        "summaryComponents": [
+          {
+            "compensationType": "Salary",
+            "interval": "1 YEAR",
+            "currencyCode": "EUR",
+            "minValue": 70000,
+            "maxValue": 80000
+          }
+        ]
+      }
+    },
+    {
+      "id": "d5f46798-8a32-52ee-9ffa-62204fbcae1a",
+      "title": "Data Scientist, Legal Analytics",
+      "location": "Berlin, Germany",
+      "secondaryLocations": [],
+      "department": "Engineering",
+      "team": "Machine Learning",
+      "isListed": true,
+      "isRemote": false,
+      "workplaceType": "OnSite",
+      "descriptionHtml": "<p>Lumen Legal builds contract-review tools used by law firms in the DACH region.</p><h3>What you'll do</h3><ul><li>Work closely with product and engineering to ship improvements every week.</li><li>Own your work from design document to production.</li></ul><h3>Requirements</h3><ul><li>NLP for legal text.</li><li>Python and SQL.</li><li>Fluent German (C1) is required.</li></ul>",
+      "descriptionPlain": "Lumen Legal builds contract-review tools used by law firms in the DACH region.\n\nWhat you'll do:\n- Work closely with product and engineering to ship improvements every week.\n- Own your work from design document to production.\n\nRequirements:\n- NLP for legal text.\n- Python and SQL.\n- Fluent German (C1) is required.",
+      "publishedAt": "2026-11-01T09:30:00+00:00",
+      "employmentType": "FullTime",
+      "address": {
+        "postalAddress": {
+          "addressLocality": "Berlin"
+        }
+      },
+      "jobUrl": "https://jobs.ashbyhq.com/lumen-legal/d5f46798-8a32-52ee-9ffa-62204fbcae1a",
+      "applyUrl": "https://jobs.ashbyhq.com/lumen-legal/d5f46798-8a32-52ee-9ffa-62204fbcae1a/application",
+      "shouldDisplayCompensationOnJobPostings": false
+    },
+    {
+      "id": "278342c2-cf31-57de-b3b3-0359b1127931",
+      "title": "Machine Learning Engineer",
+      "location": "Berlin, Germany",
+      "secondaryLocations": [],
+      "department": "Engineering",
+      "team": "Machine Learning",
+      "isListed": true,
+      "isRemote": false,
+      "workplaceType": "OnSite",
+      "descriptionHtml": "<p>Lumen Legal builds contract-review tools used by law firms in the DACH region.</p><h3>What you'll do</h3><ul><li>Work closely with product and engineering to ship improvements every week.</li><li>Own your work from design document to production.</li></ul><h3>Requirements</h3><ul><li>TensorFlow.</li><li>Python.</li></ul><p>We want a rockstar who is reachable 24/7.</p>",
+      "descriptionPlain": "Lumen Legal builds contract-review tools used by law firms in the DACH region.\n\nWhat you'll do:\n- Work closely with product and engineering to ship improvements every week.\n- Own your work from design document to production.\n\nRequirements:\n- TensorFlow.\n- Python.\n\nWe want a rockstar who is reachable 24/7.",
+      "publishedAt": "2026-10-24T09:30:00+00:00",
+      "employmentType": "FullTime",
+      "address": {
+        "postalAddress": {
+          "addressLocality": "Berlin"
+        }
+      },
+      "jobUrl": "https://jobs.ashbyhq.com/lumen-legal/278342c2-cf31-57de-b3b3-0359b1127931",
+      "applyUrl": "https://jobs.ashbyhq.com/lumen-legal/278342c2-cf31-57de-b3b3-0359b1127931/application",
+      "shouldDisplayCompensationOnJobPostings": false
+    }
+  ]
+}

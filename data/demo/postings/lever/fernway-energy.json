@@ -1,0 +1,160 @@
+[
+  {
+    "id": "993243f7-d9f0-5ea1-ac5b-8def732eed96",
+    "text": "Machine Learning Engineer (m/w/d) Energieprognosen",
+    "categories": {
+      "location": "Hamburg, Deutschland",
+      "commitment": "Full-time",
+      "team": "Machine Learning",
+      "department": "Engineering",
+      "allLocations": [
+        "Hamburg, Deutschland"
+      ]
+    },
+    "country": "DE",
+    "opening": "<p>Fernway Energy erstellt Prognosen für erneuerbare Energien für Netzbetreiber in Deutschland. Wir suchen Verstärkung für unser Team in Hamburg.</p>",
+    "openingPlain": "Fernway Energy erstellt Prognosen für erneuerbare Energien für Netzbetreiber in Deutschland. Wir suchen Verstärkung für unser Team in Hamburg.",
+    "description": "<p>Fernway Energy erstellt Prognosen für erneuerbare Energien für Netzbetreiber in Deutschland. Wir suchen Verstärkung für unser Team in Hamburg.</p>",
+    "descriptionPlain": "Fernway Energy erstellt Prognosen für erneuerbare Energien für Netzbetreiber in Deutschland. Wir suchen Verstärkung für unser Team in Hamburg.",
+    "descriptionBody": "",
+    "descriptionBodyPlain": "",
+    "lists": [
+      {
+        "text": "Deine Aufgaben",
+        "content": "<li>Du entwickelst Prognosemodelle für Wind- und Solarenergie.</li><li>Du bringst Modelle gemeinsam mit dem Team in Produktion.</li>"
+      },
+      {
+        "text": "Das bringst du mit",
+        "content": "<li>Sehr gute Kenntnisse in Python und SQL.</li><li>Erfahrung mit Zeitreihen (time series) und Prognosen.</li><li>Fließende Deutschkenntnisse (C1).</li>"
+      },
+      {
+        "text": "Wünschenswert",
+        "content": "<li>Erfahrung mit AWS.</li>"
+      }
+    ],
+    "additional": "<p>€70.000 - €85.000 pro Jahr</p>",
+    "additionalPlain": "Gehalt: €70.000 - €85.000 pro Jahr",
+    "hostedUrl": "https://jobs.lever.co/fernway-energy/993243f7-d9f0-5ea1-ac5b-8def732eed96",
+    "applyUrl": "https://jobs.lever.co/fernway-energy/993243f7-d9f0-5ea1-ac5b-8def732eed96/apply",
+    "workplaceType": "hybrid",
+    "createdAt": 1794389400000,
+    "salaryRange": {
+      "currency": "EUR",
+      "interval": "per-year-salary",
+      "min": 70000,
+      "max": 85000
+    }
+  },
+  {
+    "id": "6875f281-6ff4-58d7-8432-1759a89c1173",
+    "text": "ML Engineer, Grid Analytics",
+    "categories": {
+      "location": "Remote (Germany)",
+      "commitment": "Full-time",
+      "team": "Machine Learning",
+      "department": "Engineering",
+      "allLocations": [
+        "Remote (Germany)"
+      ]
+    },
+    "country": "DE",
+    "opening": "<p>Fernway Energy forecasts renewable output for grid operators.</p>",
+    "openingPlain": "Fernway Energy forecasts renewable output for grid operators.",
+    "description": "<p>Fernway Energy forecasts renewable output for grid operators.</p>",
+    "descriptionPlain": "Fernway Energy forecasts renewable output for grid operators.",
+    "descriptionBody": "",
+    "descriptionBodyPlain": "",
+    "lists": [
+      {
+        "text": "What you'll do",
+        "content": "<li>Work closely with product and engineering to ship improvements every week.</li><li>Own your work from design document to production.</li>"
+      },
+      {
+        "text": "Requirements",
+        "content": "<li>Strong Python.</li><li>Spark for large data.</li><li>AWS.</li><li>Pipeline orchestration with Airflow.</li>"
+      },
+      {
+        "text": "Nice to have",
+        "content": "<li>Time series modelling.</li>"
+      }
+    ],
+    "additional": "",
+    "additionalPlain": "",
+    "hostedUrl": "https://jobs.lever.co/fernway-energy/6875f281-6ff4-58d7-8432-1759a89c1173",
+    "applyUrl": "https://jobs.lever.co/fernway-energy/6875f281-6ff4-58d7-8432-1759a89c1173/apply",
+    "workplaceType": "remote",
+    "createdAt": 1793784600000
+  },
+  {
+    "id": "bc3b3478-d6d2-5de8-8ce7-9b1a437b84e5",
+    "text": "Sales Engineer, AI Solutions",
+    "categories": {
+      "location": "Berlin, Germany",
+      "commitment": "Full-time",
+      "team": "Machine Learning",
+      "department": "Engineering",
+      "allLocations": [
+        "Berlin, Germany"
+      ]
+    },
+    "country": "DE",
+    "opening": "<p>Fernway Energy forecasts renewable output for grid operators.</p>",
+    "openingPlain": "Fernway Energy forecasts renewable output for grid operators.",
+    "description": "<p>Fernway Energy forecasts renewable output for grid operators.</p>",
+    "descriptionPlain": "Fernway Energy forecasts renewable output for grid operators.",
+    "descriptionBody": "",
+    "descriptionBodyPlain": "",
+    "lists": [
+      {
+        "text": "What you'll do",
+        "content": "<li>Work closely with product and engineering to ship improvements every week.</li><li>Own your work from design document to production.</li>"
+      },
+      {
+        "text": "Requirements",
+        "content": "<li>Customer-facing experience.</li>"
+      }
+    ],
+    "additional": "",
+    "additionalPlain": "",
+    "hostedUrl": "https://jobs.lever.co/fernway-energy/bc3b3478-d6d2-5de8-8ce7-9b1a437b84e5",
+    "applyUrl": "https://jobs.lever.co/fernway-energy/bc3b3478-d6d2-5de8-8ce7-9b1a437b84e5/apply",
+    "workplaceType": "hybrid",
+    "createdAt": 1794735000000
+  },
+  {
+    "id": "c8130260-9725-532d-90e4-eef6cb7bac62",
+    "text": "Machine Learning Engineer, Recommendations",
+    "categories": {
+      "location": "Berlin, Germany",
+      "commitment": "Full-time",
+      "team": "Machine Learning",
+      "department": "Engineering",
+      "allLocations": [
+        "Berlin, Germany"
+      ]
+    },
+    "country": "DE",
+    "opening": "<p>Fernway Energy forecasts renewable output for grid operators.</p>",
+    "openingPlain": "Fernway Energy forecasts renewable output for grid operators.",
+    "description": "<p>Fernway Energy forecasts renewable output for grid operators.</p>",
+    "descriptionPlain": "Fernway Energy forecasts renewable output for grid operators.",
+    "descriptionBody": "",
+    "descriptionBodyPlain": "",
+    "lists": [
+      {
+        "text": "What you'll do",
+        "content": "<li>Work closely with product and engineering to ship improvements every week.</li><li>Own your work from design document to production.</li>"
+      },
+      {
+        "text": "Requirements",
+        "content": "<li>Python, PyTorch and recommender systems.</li>"
+      }
+    ],
+    "additional": "",
+    "additionalPlain": "",
+    "hostedUrl": "https://jobs.lever.co/fernway-energy/c8130260-9725-532d-90e4-eef6cb7bac62",
+    "applyUrl": "https://jobs.lever.co/fernway-energy/c8130260-9725-532d-90e4-eef6cb7bac62/apply",
+    "workplaceType": "hybrid",
+    "createdAt": 1788687000000
+  }
+]

@@ -1,0 +1,138 @@
+{
+  "user": "sam-demo-example",
+  "repos": [
+    {
+      "id": 900100,
+      "name": "rag-eval-kit",
+      "full_name": "sam-demo-example/rag-eval-kit",
+      "html_url": "https://github.com/sam-demo-example/rag-eval-kit",
+      "description": "Evaluate RAG answers against reference documents",
+      "fork": false,
+      "language": "Python",
+      "topics": [
+        "llm",
+        "rag",
+        "evaluation"
+      ],
+      "stargazers_count": 18,
+      "pushed_at": "2026-09-22T00:00:00+00:00",
+      "default_branch": "main",
+      "archived": false
+    },
+    {
+      "id": 900101,
+      "name": "jobgraph-agent",
+      "full_name": "sam-demo-example/jobgraph-agent",
+      "html_url": "https://github.com/sam-demo-example/jobgraph-agent",
+      "description": "Job-search agent built with LangGraph and hybrid retrieval",
+      "fork": false,
+      "language": "Python",
+      "topics": [
+        "langgraph",
+        "llm",
+        "bm25"
+      ],
+      "stargazers_count": 15,
+      "pushed_at": "2026-10-20T00:00:00+00:00",
+      "default_branch": "main",
+      "archived": false
+    },
+    {
+      "id": 900102,
+      "name": "k8s-model-serving-budget",
+      "full_name": "sam-demo-example/k8s-model-serving-budget",
+      "html_url": "https://github.com/sam-demo-example/k8s-model-serving-budget",
+      "description": "Cheap model serving on Kubernetes with scale to zero",
+      "fork": false,
+      "language": "Python",
+      "topics": [
+        "kubernetes",
+        "mlops"
+      ],
+      "stargazers_count": 12,
+      "pushed_at": "2026-10-07T00:00:00+00:00",
+      "default_branch": "main",
+      "archived": false
+    },
+    {
+      "id": 900103,
+      "name": "spot-trainer",
+      "full_name": "sam-demo-example/spot-trainer",
+      "html_url": "https://github.com/sam-demo-example/spot-trainer",
+      "description": "PyTorch training on AWS spot instances with checkpoint resume",
+      "fork": false,
+      "language": "Python",
+      "topics": [
+        "pytorch",
+        "aws"
+      ],
+      "stargazers_count": 9,
+      "pushed_at": "2026-09-02T00:00:00+00:00",
+      "default_branch": "main",
+      "archived": false
+    },
+    {
+      "id": 900104,
+      "name": "ts-anomaly",
+      "full_name": "sam-demo-example/ts-anomaly",
+      "html_url": "https://github.com/sam-demo-example/ts-anomaly",
+      "description": "Time series anomaly detection experiments",
+      "fork": false,
+      "language": "Jupyter Notebook",
+      "topics": [
+        "time-series",
+        "anomaly-detection"
+      ],
+      "stargazers_count": 6,
+      "pushed_at": "2026-04-15T00:00:00+00:00",
+      "default_branch": "main",
+      "archived": false
+    },
+    {
+      "id": 900105,
+      "name": "awesome-mlops",
+      "full_name": "sam-demo-example/awesome-mlops",
+      "html_url": "https://github.com/sam-demo-example/awesome-mlops",
+      "description": "A curated list of MLOps resources (fork)",
+      "fork": true,
+      "language": null,
+      "topics": [
+        "mlops"
+      ],
+      "stargazers_count": 3,
+      "pushed_at": "2026-01-05T00:00:00+00:00",
+      "default_branch": "main",
+      "archived": false
+    }
+  ],
+  "languages": {
+    "rag-eval-kit": {
+      "Python": 52000,
+      "Shell": 1200
+    },
+    "jobgraph-agent": {
+      "Python": 31000
+    },
+    "k8s-model-serving-budget": {
+      "Python": 18000,
+      "Dockerfile": 900,
+      "HCL": 4000
+    },
+    "spot-trainer": {
+      "Python": 22000
+    },
+    "ts-anomaly": {
+      "Jupyter Notebook": 80000,
+      "Python": 6000
+    },
+    "awesome-mlops": {}
+  },
+  "readmes": {
+    "rag-eval-kit": "# rag-eval-kit\nScores answers from retrieval-augmented generation pipelines against reference documents. Supports faithfulness and citation checks. Written in Python.",
+    "jobgraph-agent": "# jobgraph-agent\nA LangGraph agent with human approval steps. Uses BM25 plus embeddings for retrieval.",
+    "k8s-model-serving-budget": "# k8s-model-serving-budget\nHelm chart and Python service to serve models on Kubernetes with autoscaling to zero. Terraform examples included.",
+    "spot-trainer": "# spot-trainer\nResumable PyTorch training loops for AWS spot capacity.",
+    "ts-anomaly": "# ts-anomaly\nNotebooks comparing time series anomaly detection methods.",
+    "awesome-mlops": "# awesome-mlops\nFork of a curated list."
+  }
+}

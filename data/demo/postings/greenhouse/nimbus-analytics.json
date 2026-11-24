@@ -1,0 +1,205 @@
+{
+  "jobs": [
+    {
+      "id": 4001,
+      "internal_job_id": 94001,
+      "title": "Senior Machine Learning Engineer, ML Platform",
+      "updated_at": "2026-11-14T09:30:00+00:00",
+      "requisition_id": null,
+      "location": {
+        "name": "Berlin, Germany"
+      },
+      "absolute_url": "https://boards.greenhouse.io/nimbus-analytics/jobs/4001",
+      "language": "en",
+      "metadata": null,
+      "content": "&lt;p&gt;Nimbus Analytics builds forecasting and analytics software for mid-sized European manufacturers. Our Berlin team of 60 engineers ships every week.&lt;/p&gt;&lt;h3&gt;What you&#x27;ll do&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;Own the platform that trains and serves our forecasting models.&lt;/li&gt;&lt;li&gt;Make deployment boring for data scientists.&lt;/li&gt;&lt;/ul&gt;&lt;h3&gt;Requirements&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;5+ years of experience writing production Python.&lt;/li&gt;&lt;li&gt;Hands-on experience running workloads on Kubernetes.&lt;/li&gt;&lt;li&gt;A track record in MLOps: model deployment, monitoring and retraining.&lt;/li&gt;&lt;li&gt;Experience training models with PyTorch.&lt;/li&gt;&lt;/ul&gt;&lt;h3&gt;Nice to have&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;Experience with Airflow for orchestration.&lt;/li&gt;&lt;li&gt;Terraform for infrastructure.&lt;/li&gt;&lt;/ul&gt;&lt;h3&gt;Compensation&lt;/h3&gt;&lt;p&gt;€85,000 - €105,000 per year&lt;/p&gt;",
+      "departments": [
+        {
+          "id": 11,
+          "name": "Engineering",
+          "parent_id": null,
+          "child_ids": []
+        }
+      ],
+      "offices": [
+        {
+          "id": 21,
+          "name": "Berlin, Germany",
+          "location": "Berlin, Germany",
+          "parent_id": null,
+          "child_ids": []
+        }
+      ],
+      "first_published": "2026-11-14T09:30:00+00:00",
+      "company_name": "Nimbus Analytics"
+    },
+    {
+      "id": 4005,
+      "internal_job_id": 94005,
+      "title": "Senior Machine Learning Engineer, ML Platform (m/f/d)",
+      "updated_at": "2026-11-07T09:30:00+00:00",
+      "requisition_id": null,
+      "location": {
+        "name": "Berlin, Germany"
+      },
+      "absolute_url": "https://boards.greenhouse.io/nimbus-analytics/jobs/4005",
+      "language": "en",
+      "metadata": null,
+      "content": "&lt;p&gt;Nimbus Analytics builds forecasting and analytics software for mid-sized European manufacturers. Our Berlin team of 60 engineers ships every week.&lt;/p&gt;&lt;h3&gt;What you&#x27;ll do&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;Own the platform that trains and serves our forecasting models.&lt;/li&gt;&lt;li&gt;Make deployment boring for data scientists.&lt;/li&gt;&lt;/ul&gt;&lt;h3&gt;Requirements&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;5+ years of experience writing production Python.&lt;/li&gt;&lt;li&gt;Hands-on experience running workloads on Kubernetes.&lt;/li&gt;&lt;li&gt;A track record in MLOps: model deployment, monitoring and retraining.&lt;/li&gt;&lt;li&gt;Experience training models with PyTorch.&lt;/li&gt;&lt;/ul&gt;&lt;h3&gt;Nice to have&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;Experience with Airflow for orchestration.&lt;/li&gt;&lt;li&gt;Terraform for infrastructure.&lt;/li&gt;&lt;/ul&gt;&lt;h3&gt;Compensation&lt;/h3&gt;&lt;p&gt;€85,000 - €105,000 per year&lt;/p&gt;",
+      "departments": [
+        {
+          "id": 11,
+          "name": "Engineering",
+          "parent_id": null,
+          "child_ids": []
+        }
+      ],
+      "offices": [
+        {
+          "id": 21,
+          "name": "Berlin, Germany",
+          "location": "Berlin, Germany",
+          "parent_id": null,
+          "child_ids": []
+        }
+      ],
+      "first_published": "2026-11-07T09:30:00+00:00",
+      "company_name": "Nimbus Analytics"
+    },
+    {
+      "id": 4002,
+      "internal_job_id": 94002,
+      "title": "LLM Engineer, Retrieval",
+      "updated_at": "2026-11-17T09:30:00+00:00",
+      "requisition_id": null,
+      "location": {
+        "name": "Remote (EU)"
+      },
+      "absolute_url": "https://boards.greenhouse.io/nimbus-analytics/jobs/4002",
+      "language": "en",
+      "metadata": null,
+      "content": "&lt;p&gt;Nimbus Analytics builds forecasting and analytics software for mid-sized European manufacturers. Our Berlin team of 60 engineers ships every week.&lt;/p&gt;&lt;h3&gt;What you&#x27;ll do&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;Work closely with product and engineering to ship improvements every week.&lt;/li&gt;&lt;li&gt;Own your work from design document to production.&lt;/li&gt;&lt;/ul&gt;&lt;h3&gt;Requirements&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;Strong Python engineering skills.&lt;/li&gt;&lt;li&gt;Experience building applications with LLMs in production.&lt;/li&gt;&lt;li&gt;Hands-on RAG experience: chunking, retrieval and ranking.&lt;/li&gt;&lt;li&gt;You treat evaluation as a first-class part of the work.&lt;/li&gt;&lt;/ul&gt;&lt;h3&gt;Nice to have&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;Experience with LangGraph or similar orchestration.&lt;/li&gt;&lt;li&gt;Familiarity with vector databases such as pgvector.&lt;/li&gt;&lt;/ul&gt;&lt;h3&gt;Compensation&lt;/h3&gt;&lt;p&gt;€80,000 - €100,000 per year&lt;/p&gt;",
+      "departments": [
+        {
+          "id": 11,
+          "name": "Engineering",
+          "parent_id": null,
+          "child_ids": []
+        }
+      ],
+      "offices": [
+        {
+          "id": 21,
+          "name": "Remote (EU)",
+          "location": "Remote (EU)",
+          "parent_id": null,
+          "child_ids": []
+        }
+      ],
+      "first_published": "2026-11-17T09:30:00+00:00",
+      "company_name": "Nimbus Analytics"
+    },
+    {
+      "id": 4003,
+      "internal_job_id": 94003,
+      "title": "Data Scientist, Pricing",
+      "updated_at": "2026-10-31T09:30:00+00:00",
+      "requisition_id": null,
+      "location": {
+        "name": "Berlin, Germany"
+      },
+      "absolute_url": "https://boards.greenhouse.io/nimbus-analytics/jobs/4003",
+      "language": "en",
+      "metadata": null,
+      "content": "&lt;p&gt;Nimbus Analytics builds forecasting and analytics software for mid-sized European manufacturers. Our Berlin team of 60 engineers ships every week.&lt;/p&gt;&lt;h3&gt;What you&#x27;ll do&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;Work closely with product and engineering to ship improvements every week.&lt;/li&gt;&lt;li&gt;Own your work from design document to production.&lt;/li&gt;&lt;/ul&gt;&lt;h3&gt;Requirements&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;Solid statistics and experimentation background.&lt;/li&gt;&lt;li&gt;Python and SQL for analysis.&lt;/li&gt;&lt;/ul&gt;&lt;h3&gt;Nice to have&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;Experience with time series.&lt;/li&gt;&lt;/ul&gt;",
+      "departments": [
+        {
+          "id": 11,
+          "name": "Engineering",
+          "parent_id": null,
+          "child_ids": []
+        }
+      ],
+      "offices": [
+        {
+          "id": 21,
+          "name": "Berlin, Germany",
+          "location": "Berlin, Germany",
+          "parent_id": null,
+          "child_ids": []
+        }
+      ],
+      "first_published": "2026-10-31T09:30:00+00:00",
+      "company_name": "Nimbus Analytics"
+    },
+    {
+      "id": 4004,
+      "internal_job_id": 94004,
+      "title": "Machine Learning Intern",
+      "updated_at": "2026-11-18T09:30:00+00:00",
+      "requisition_id": null,
+      "location": {
+        "name": "Berlin, Germany"
+      },
+      "absolute_url": "https://boards.greenhouse.io/nimbus-analytics/jobs/4004",
+      "language": "en",
+      "metadata": null,
+      "content": "&lt;p&gt;Nimbus Analytics builds forecasting and analytics software for mid-sized European manufacturers. Our Berlin team of 60 engineers ships every week.&lt;/p&gt;&lt;h3&gt;What you&#x27;ll do&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;Work closely with product and engineering to ship improvements every week.&lt;/li&gt;&lt;li&gt;Own your work from design document to production.&lt;/li&gt;&lt;/ul&gt;&lt;h3&gt;Requirements&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;Currently enrolled in a degree program.&lt;/li&gt;&lt;li&gt;Some Python.&lt;/li&gt;&lt;/ul&gt;",
+      "departments": [
+        {
+          "id": 11,
+          "name": "Engineering",
+          "parent_id": null,
+          "child_ids": []
+        }
+      ],
+      "offices": [
+        {
+          "id": 21,
+          "name": "Berlin, Germany",
+          "location": "Berlin, Germany",
+          "parent_id": null,
+          "child_ids": []
+        }
+      ],
+      "first_published": "2026-11-18T09:30:00+00:00",
+      "company_name": "Nimbus Analytics"
+    },
+    {
+      "id": 4006,
+      "internal_job_id": 94006,
+      "title": "Frontend Engineer, Dashboards",
+      "updated_at": "2026-11-11T09:30:00+00:00",
+      "requisition_id": null,
+      "location": {
+        "name": "Berlin, Germany"
+      },
+      "absolute_url": "https://boards.greenhouse.io/nimbus-analytics/jobs/4006",
+      "language": "en",
+      "metadata": null,
+      "content": "&lt;p&gt;Nimbus Analytics builds forecasting and analytics software for mid-sized European manufacturers. Our Berlin team of 60 engineers ships every week.&lt;/p&gt;&lt;h3&gt;What you&#x27;ll do&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;Work closely with product and engineering to ship improvements every week.&lt;/li&gt;&lt;li&gt;Own your work from design document to production.&lt;/li&gt;&lt;/ul&gt;&lt;h3&gt;Requirements&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;React and TypeScript.&lt;/li&gt;&lt;/ul&gt;",
+      "departments": [
+        {
+          "id": 11,
+          "name": "Engineering",
+          "parent_id": null,
+          "child_ids": []
+        }
+      ],
+      "offices": [
+        {
+          "id": 21,
+          "name": "Berlin, Germany",
+          "location": "Berlin, Germany",
+          "parent_id": null,
+          "child_ids": []
+        }
+      ],
+      "first_published": "2026-11-11T09:30:00+00:00",
+      "company_name": "Nimbus Analytics"
+    }
+  ],
+  "meta": {
+    "total": 6
+  }
+}
