@@ -1,0 +1,29 @@
+# Personal data and secrets: never commit
+.env
+profiles/me/
+outputs/
+data/*.db
+data/*.db-*
+data/*.sqlite
+data/*.sqlite-*
+data/cache/
+*.pdf
+!data/demo/**/*.pdf
+!profiles/example/**/*.pdf
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+
+# Editors / OS
+.DS_Store
+.idea/
+.vscode/
