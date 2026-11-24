@@ -1,0 +1,58 @@
+# How matches are scored. Scores are 0-100. Deterministic: no LLM is used for scoring.
+# Every key: what it does | allowed values | default.
+
+# Relative weight of each criterion. Any non-negative numbers; they are normalised to sum to 1.
+weights:
+  # Share of the posting's must-have skills you have evidence for (related skills give partial credit). | >=0 | 0.30
+  must_have: 0.30
+  # Share of nice-to-have skills covered. | >=0 | 0.10
+  nice_to_have: 0.10
+  # Hybrid (BM25 + embedding) similarity between posting and your evidence. | >=0 | 0.20
+  semantic: 0.20
+  # Title matches one of search.yaml titles.include. | >=0 | 0.10
+  title: 0.10
+  # Posting seniority is in target_seniority below. | >=0 | 0.10
+  seniority: 0.10
+  # Location/remote fit with search.yaml locations. | >=0 | 0.10
+  location: 0.10
+  # You speak the languages the posting requires (from profile identity.languages). | >=0 | 0.05
+  language: 0.05
+  # Stated salary meets salary_floor (unknown salary scores neutral 0.5). | >=0 | 0.05
+  salary: 0.05
+
+# Minimum score to make the shortlist. | 0-100 | 50
+threshold: 50
+
+# Max jobs on the shortlist. | >=1 | 8
+top_n: 8
+
+# Credit for a related skill (from skills.yaml `related`) instead of an exact one. | 0-1 | 0.5
+related_skill_credit: 0.5
+
+# Seniority levels you want. | list of intern, junior, mid, senior, staff, principal, lead, unknown | [mid, senior]
+target_seniority: [mid, senior, staff]
+
+# Salary floor. Postings without a stated salary are never penalised by the floor.
+salary_floor:
+  # Minimum yearly amount; null disables. | integer or null | null
+  amount: null
+  # ISO currency; postings in other currencies are not compared. | text | EUR
+  currency: EUR
+
+# Hard filters: a hit removes the posting from the shortlist and is shown as the reason.
+dealbreakers:
+  # Company names to never show (case-insensitive exact match). | list | []
+  excluded_companies: []
+  # Words that disqualify a posting if found in title or text (case-insensitive). | list | []
+  excluded_keywords: ["unpaid", "commission only"]
+  # Drop postings that require a language you do not list in your profile. | true, false | true
+  require_language_match: true
+  # Drop postings whose stated salary is below salary_floor. | true, false | false
+  enforce_salary_floor: false
+
+# Learning from your past shortlist decisions (stored in the LangGraph Store).
+preference:
+  # Adjust scores from your approve/reject reason tags. | true, false | true
+  enabled: true
+  # Max points added or removed by learned preferences. | 0-50 | 10
+  max_adjustment: 10

@@ -1,0 +1,66 @@
+# Which jobs to look for (LIVE mode). Demo mode reads data/demo/search.yaml instead.
+# Every key: what it does | allowed values | default.
+
+# Job boards to read. Only public ATS endpoints and RSS; LinkedIn/Indeed are never scraped
+# (their terms forbid it and they have no public API; see src/careergraph/sources/README.md).
+# Find a company's board slug in its careers-page URL, e.g. boards.greenhouse.io/<slug>.
+# The entries below are PLACEHOLDERS: replace the slug or they are skipped with a warning.
+sources:
+  # Greenhouse board | type: greenhouse | slug = board token
+  - type: greenhouse
+    # Board token from boards.greenhouse.io/<token> | text | (required)
+    slug: REPLACE_WITH_GREENHOUSE_BOARD_TOKEN
+    # Display name used in outputs (defaults to the slug) | text | ""
+    company: ""
+    # Set false to keep an entry without using it | true, false | true
+    enabled: false
+  # Lever board | type: lever | slug = site name from jobs.lever.co/<site>
+  - type: lever
+    # Site name | text | (required)
+    slug: REPLACE_WITH_LEVER_SITE
+    # Lever API host region | global, eu | global
+    region: global
+    # Set false to keep an entry without using it | true, false | true
+    enabled: false
+  # Ashby board | type: ashby | slug = job board name from jobs.ashbyhq.com/<name>
+  - type: ashby
+    # Job board name | text | (required)
+    slug: REPLACE_WITH_ASHBY_BOARD
+    # Set false to keep an entry without using it | true, false | true
+    enabled: false
+  # RSS/Atom feed of postings | type: rss | url = https feed URL (its host is allow-listed)
+  - type: rss
+    # Feed URL, https only | URL | (required)
+    url: https://REPLACE_WITH_FEED_HOST/jobs.rss
+    # Company name for feed items without one | text | ""
+    company: ""
+    # Set false to keep an entry without using it | true, false | true
+    enabled: false
+
+# Title keyword filters (case-insensitive substring match on the posting title).
+titles:
+  # Keep a posting only if its title contains one of these. Empty = keep all. | list | []
+  include: ["machine learning", "ml engineer", "ai engineer", "applied scientist", "data scientist", "mlops"]
+  # Drop a posting whose title contains any of these. | list | []
+  exclude: ["intern", "sales", "recruiter"]
+
+# Location filters.
+locations:
+  # Keep postings whose location contains one of these (case-insensitive). Empty = any. | list | []
+  include: ["Berlin", "Germany", "Europe", "EU", "Remote"]
+  # Remote preference: required = remote only, preferred = boost remote, any, excluded = on-site only.
+  # | required, preferred, any, excluded | any
+  remote: preferred
+
+# Ignore postings older than this many days. | >=1 | 30
+max_age_days: 30
+
+# Optional company info for research_company: the company's own domain is added to the
+# fetch allowlist and `pages` are read by the no-key `site` search provider.
+# Key = company name exactly as it appears in postings.
+companies: {}
+#  Example Company:
+#    # Company website domain (no scheme) | domain | ""
+#    domain: example.com
+#    # Pages on that domain to read for research | list of https URLs | []
+#    pages: ["https://example.com/about"]

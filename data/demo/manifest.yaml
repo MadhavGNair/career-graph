@@ -1,0 +1,3 @@
+# Demo world settings. Fixed "today" makes posting ages, the skills-trend chart and tests
+# reproducible regardless of when the demo runs.
+today: "2026-11-20"

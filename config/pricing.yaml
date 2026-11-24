@@ -1,0 +1,28 @@
+# Optional model prices for USD estimates and the MAX_USD_* caps.
+# Shipped EMPTY on purpose: prices change, so copy CURRENT prices from your provider's
+# pricing page (e.g. https://platform.claude.com/docs/en/about-claude/pricing) and fill them in.
+# While a model's input/output prices are null, only token budgets apply to it.
+
+# Currency label used in reports | text | USD
+currency: USD
+
+# Model id exactly as in CHEAP_MODEL / STRONG_MODEL -> prices per million tokens.
+models:
+  "anthropic:claude-haiku-5-5":
+    # USD per 1M input tokens | number or null | null
+    input_per_mtok: null
+    # USD per 1M output tokens | number or null | null
+    output_per_mtok: null
+    # USD per 1M cache-read input tokens | number or null | null
+    cache_read_per_mtok: null
+    # USD per 1M cache-write input tokens | number or null | null
+    cache_write_per_mtok: null
+  "anthropic:claude-sonnet-5-5":
+    # USD per 1M input tokens | number or null | null
+    input_per_mtok: null
+    # USD per 1M output tokens | number or null | null
+    output_per_mtok: null
+    # USD per 1M cache-read input tokens | number or null | null
+    cache_read_per_mtok: null
+    # USD per 1M cache-write input tokens | number or null | null
+    cache_write_per_mtok: null

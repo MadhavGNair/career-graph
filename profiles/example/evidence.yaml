@@ -1,0 +1,16 @@
+# Hand-editable evidence. Items with pinned: true are merged into every extraction and never
+# overwritten by the model. Use this to add facts the extractor missed.
+items:
+  - id: ev-p001
+    # experience, project, education, achievement or publication
+    kind: achievement
+    # the claim exactly as you want it cited
+    text: "Mentored four junior engineers through their first production ML launches."
+    # canonical or alias skill names (normalised via config/skills.yaml)
+    skills: [mlops]
+    # where this comes from (file/section or URL)
+    source_ref: "evidence.yaml"
+    # free text dates
+    dates: "2022-2024"
+    # never overwritten
+    pinned: true

@@ -1,0 +1,86 @@
+# DEMO search config (used when APP_MODE=demo). All companies and board slugs below are
+# FICTIONAL; each source maps to a fixture file under data/demo/postings/<type>/.
+# Same schema as config/search.yaml; see the comments there for every key.
+
+sources:
+  # Fictional Greenhouse board -> data/demo/postings/greenhouse/nimbus-analytics.json
+  - type: greenhouse  # adapter: greenhouse, lever, ashby or rss
+    # fictional board token
+    slug: nimbus-analytics
+    # display name
+    company: Nimbus Analytics
+  - type: greenhouse  # adapter: greenhouse, lever, ashby or rss
+    # fictional board token
+    slug: harborline-logistics
+    # display name
+    company: Harborline Logistics
+  - type: lever  # adapter: greenhouse, lever, ashby or rss
+    # fictional Lever site
+    slug: kestrel-health
+    # display name
+    company: Kestrel Health
+  - type: lever  # adapter: greenhouse, lever, ashby or rss
+    # fictional Lever site
+    slug: fernway-energy
+    # display name
+    company: Fernway Energy
+    # Lever EU host (fixture ignores it, live uses api.eu.lever.co)
+    region: eu
+  - type: ashby  # adapter: greenhouse, lever, ashby or rss
+    # fictional Ashby board
+    slug: orbitly
+    # display name
+    company: Orbitly
+  - type: ashby  # adapter: greenhouse, lever, ashby or rss
+    # fictional Ashby board
+    slug: lumen-legal
+    # display name
+    company: Lumen Legal
+  - type: rss  # adapter: greenhouse, lever, ashby or rss
+    # fictional feed -> data/demo/postings/rss/jobs.quarrylabs.example.xml
+    url: https://jobs.quarrylabs.example/feed.rss
+    # company for feed items
+    company: Quarry Labs
+
+titles:  # title keyword filters
+  # keep titles containing one of these
+  include: ["machine learning", "ml engineer", "ml platform", "ai engineer", "applied scientist", "data scientist", "mlops", "llm"]
+  # drop titles containing one of these
+  exclude: ["intern", "sales", "frontend"]
+
+locations:  # location filters
+  # keep locations containing one of these
+  include: ["Berlin", "Germany", "Remote", "Europe", "EU", "Munich", "Hamburg", "Amsterdam", "London", "New York"]
+  # remote preference
+  remote: preferred
+
+# demo "today" is fixed in data/demo/manifest.yaml so ages are reproducible
+max_age_days: 60
+
+# fictional company sites for research (domains use the reserved .example TLD)
+companies:
+  Nimbus Analytics:
+    # fictional domain
+    domain: nimbus-analytics.example
+    # pages read by the site provider
+    pages: ["https://nimbus-analytics.example/about", "https://nimbus-analytics.example/engineering"]
+  Kestrel Health:
+    # fictional domain
+    domain: kestrel-health.example
+    # pages read by the site provider
+    pages: ["https://kestrel-health.example/about", "https://kestrel-health.example/blog/ml-at-kestrel"]
+  Orbitly:
+    # fictional domain
+    domain: orbitly.example
+    # pages read by the site provider
+    pages: ["https://orbitly.example/about"]
+  Harborline Logistics:
+    # fictional domain
+    domain: harborline.example
+    # pages read by the site provider
+    pages: ["https://harborline.example/about"]
+  Fernway Energy:
+    # fictional domain
+    domain: fernway-energy.example
+    # pages read by the site provider
+    pages: ["https://fernway-energy.example/about"]

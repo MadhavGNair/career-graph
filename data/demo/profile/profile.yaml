@@ -1,0 +1,84 @@
+# DEMO profile: "Sam Demo" is FICTIONAL. Employers and universities are invented.
+# Same schema as config/profile.yaml; see the comments there for every key.
+
+identity:
+  # fictional person
+  name: Sam Demo
+  # headline
+  headline: Senior Machine Learning Engineer
+  # fictional contact
+  email: sam.demo@example.com
+  # empty phone is omitted from the CV
+  phone: ""
+  # location
+  location: Berlin, Germany
+  # links (example.com is reserved for documentation)
+  links:
+    github: https://github.com/sam-demo-example
+    website: https://sam-demo.example.com
+  # spoken languages
+  languages:
+    - code: en  # ISO 639-1 language code
+      # proficiency
+      level: fluent
+    - code: de  # ISO 639-1 language code
+      # proficiency
+      level: intermediate
+
+# fictional employers, newest first
+experience:
+  - employer: Quillfeather Analytics GmbH
+    # title
+    title: Senior Machine Learning Engineer
+    # YYYY-MM
+    start: "2021-03"
+    # YYYY-MM or present
+    end: present
+    # location
+    location: Berlin, Germany
+  - employer: Brightwater Retail Tech
+    # title
+    title: Data Scientist
+    # YYYY-MM
+    start: "2018-06"
+    # YYYY-MM
+    end: "2021-02"
+    # location
+    location: Hamburg, Germany
+
+# fictional university
+education:
+  - institution: Northbridge Technical University
+    # degree
+    degree: MSc
+    # field
+    field: Computer Science
+    # YYYY-MM
+    start: "2016-10"
+    # YYYY-MM
+    end: "2018-05"
+  - institution: Northbridge Technical University
+    # degree
+    degree: BSc
+    # field
+    field: Mathematics
+    # YYYY-MM
+    start: "2013-10"
+    # YYYY-MM
+    end: "2016-09"
+
+documents:
+  # demo documents folder
+  dir: data/demo/profile
+  # file patterns
+  include: ["*.md", "*.tex", "*.txt", "*.pdf"]
+  # hand-edited evidence (pinned items)
+  evidence_file: evidence.yaml
+
+github:
+  # fictional username -> data/demo/github/sam-demo-example.json
+  username: sam-demo-example
+  # max repos
+  max_repos: 10
+  # README characters kept per repo
+  readme_max_chars: 1500
