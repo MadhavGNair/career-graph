@@ -25,9 +25,9 @@ Never push. No live LLM calls. Never fabricate numbers (see CLAUDE.md).
 - [x] ingest_profile, extract_profile (+ pinned evidence.yaml merge, skip-when-unchanged edge), `make profile`
 
 ## P3 Jobs
-- [~] SSRF-safe fetcher (written in P2 for GitHub; tests in P3) (allowlist, private IP block, redirect revalidation, caps, robots, ETag, rate limit)
-- [ ] Greenhouse/Lever/Ashby/RSS adapters + fixture transport, injection scanner + wrapping
-- [ ] find_jobs (filters, dedupe, MAX_JOBS_PER_RUN, content-hash skip), extract_jobs (Send fan-out)
+- [x] SSRF-safe fetcher (allowlist, private IP block, redirect revalidation, caps, robots, ETag, rate limit)
+- [x] Greenhouse/Lever/Ashby/RSS adapters + fixture transport, injection scanner + wrapping
+- [x] find_jobs (filters, dedupe, MAX_JOBS_PER_RUN, content-hash skip), extract_jobs (Send fan-out)
 
 ## P4 Match + first pause
 - [ ] persistence (SQLAlchemy models, schema_version, checkpointer + Store factories, sqlite/postgres)
