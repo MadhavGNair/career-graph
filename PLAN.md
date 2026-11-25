@@ -30,10 +30,10 @@ Never push. No live LLM calls. Never fabricate numbers (see CLAUDE.md).
 - [x] find_jobs (filters, dedupe, MAX_JOBS_PER_RUN, content-hash skip), extract_jobs (Send fan-out)
 
 ## P4 Match + first pause
-- [ ] persistence (SQLAlchemy models, schema_version, checkpointer + Store factories, sqlite/postgres)
-- [ ] match_jobs (criteria, dealbreakers, partial credit, evidence ids, preference adjustment, rationale)
-- [ ] human_shortlist interrupt + decisions to DB + preferences to Store
-- [ ] service layer + CLI (run, pending, shortlist, approve, resume)
+- [x] persistence (SQLAlchemy models, schema_version, checkpointer + Store factories, sqlite/postgres)
+- [x] match_jobs (criteria, dealbreakers, partial credit, evidence ids, preference adjustment, rationale)
+- [x] human_shortlist interrupt + decisions to DB + preferences to Store
+- [x] service layer + CLI (run, pending, shortlist, approve, resume)
 
 ## P5 Documents
 - [ ] document_factory subgraph (draft <-> verify loop, MAX_REVISIONS), research_company subgraph (ToolNode)
