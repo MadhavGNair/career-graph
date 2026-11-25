@@ -85,12 +85,17 @@ def open_persistence(settings: Settings) -> Iterator[GraphPersistence]:
 
     path = sqlite_path(settings)
     path.parent.mkdir(parents=True, exist_ok=True)
-    conn = sqlite3.connect(path, check_same_thread=False, timeout=30)
+    # Separate connections: SqliteStore manages its own transactions and needs autocommit mode
+    # (as in SqliteStore.from_conn_string); sharing the saver's connection causes
+    # "cannot start a transaction within a transaction".
+    saver_conn = sqlite3.connect(path, check_same_thread=False, timeout=30)
+    store_conn = sqlite3.connect(path, check_same_thread=False, timeout=30, isolation_level=None)
     try:
-        conn.execute("PRAGMA journal_mode=WAL")
-        saver = SqliteSaver(conn, serde=serde)
-        store = SqliteStore(conn)
+        saver_conn.execute("PRAGMA journal_mode=WAL")
+        saver = SqliteSaver(saver_conn, serde=serde)
+        store = SqliteStore(store_conn)
         store.setup()
         yield GraphPersistence(saver, store, f"sqlite:{path.name}")
     finally:
-        conn.close()
+        saver_conn.close()
+        store_conn.close()
