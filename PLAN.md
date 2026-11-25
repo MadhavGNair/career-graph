@@ -21,11 +21,11 @@ Never push. No live LLM calls. Never fabricate numbers (see CLAUDE.md).
 - [x] demo data: Sam Demo CV + 2 letters (.md, .tex), GitHub fixture (5 repos), ~30 postings (3 injection, 2 near-dup, 1 German), 5 company web fixtures, eval gold files
 
 ## P2 Profile
-- [ ] document parsers (pypdf, md/txt, tex stripping), GitHub adapter (SSRF-safe, cached)
-- [ ] ingest_profile, extract_profile (+ pinned evidence.yaml merge, skip-when-unchanged edge), `make profile`
+- [x] document parsers (pypdf, md/txt, tex stripping), GitHub adapter (SSRF-safe, cached)
+- [x] ingest_profile, extract_profile (+ pinned evidence.yaml merge, skip-when-unchanged edge), `make profile`
 
 ## P3 Jobs
-- [ ] SSRF-safe fetcher (allowlist, private IP block, redirect revalidation, caps, robots, ETag, rate limit)
+- [~] SSRF-safe fetcher (written in P2 for GitHub; tests in P3) (allowlist, private IP block, redirect revalidation, caps, robots, ETag, rate limit)
 - [ ] Greenhouse/Lever/Ashby/RSS adapters + fixture transport, injection scanner + wrapping
 - [ ] find_jobs (filters, dedupe, MAX_JOBS_PER_RUN, content-hash skip), extract_jobs (Send fan-out)
 
