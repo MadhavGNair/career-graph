@@ -19,6 +19,10 @@ flowchart LR
   and CI) and `FastEmbedEmbedder` (`BAAI/bge-small-en-v1.5` by default, ONNX on CPU) with a
   SQLite cache keyed by `sha256(model + text)` under `CACHE_DIR`.
 
+## LangGraph concepts used and why
+Used inside `match_jobs` and `select_evidence`; the index is rebuilt per run from the profile
+in state (cheap) rather than stored in the checkpoint.
+
 ## Key files
 `embeddings.py` (backends + cache), `index.py` (BM25 + cosine + RRF).
 

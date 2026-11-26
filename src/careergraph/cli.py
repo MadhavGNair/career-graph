@@ -256,6 +256,132 @@ def fork(
         report(svc.fork(thread, checkpoint, updates, as_node or None, on_event))
 
 
+@app.command()
+def review(
+    thread: str,
+    action: str = typer.Option("approve-all", help="approve-all | reject-all"),
+    override: bool = typer.Option(False, help="also approve drafts still flagged after revisions"),
+) -> None:
+    """Resume the review pause (use the UI to edit or regenerate single drafts)."""
+    from careergraph.domain.models import ReviewAction
+
+    with service() as svc:
+        drafts = svc.get_review(thread)["drafts"]
+        actions: list[ReviewAction] = []
+        for d in drafts:
+            if action == "reject-all":
+                actions.append(
+                    ReviewAction(job_id=d["job_id"], action="reject", reason="rejected via CLI")
+                )
+            elif d["flagged"] and not override:
+                console.print(
+                    f"[yellow]{d['job_id']} is flagged; rejecting (pass --override to approve)[/]"
+                )
+                actions.append(ReviewAction(job_id=d["job_id"], action="reject", reason="flagged"))
+            else:
+                actions.append(
+                    ReviewAction(job_id=d["job_id"], action="approve", override=override)
+                )
+        report(svc.review_documents(thread, actions, on_event))
+
+
+@app.command()
+def render(job: str) -> None:
+    """Re-render a saved application's .tex (and PDF if an engine exists)."""
+    with service() as svc:
+        for r in svc.render(job):
+            console.print(f"{r.engine}: {r.message}")
+
+
+@app.command("render-sample")
+def render_sample() -> None:
+    """Render the templates with sample data into OUTPUT_DIR/sample/."""
+    with service() as svc:
+        out, results = svc.render_sample()
+        console.print(f"wrote {out}/cv.tex and letter.tex")
+        for r in results:
+            console.print(f"  {r.engine}: {r.message}")
+
+
+tracker_app = typer.Typer(help="Tracked applications")
+app.add_typer(tracker_app, name="tracker")
+
+
+@tracker_app.command("list")
+def tracker_list() -> None:
+    """List applications and their status."""
+    with service() as svc:
+        apps = svc.list_applications()
+        if not apps:
+            console.print("No applications yet.")
+        for a in apps:
+            console.print(f"  [cyan]{a.job_id}[/] {a.status:10} {a.company}: {a.role}  {a.out_dir}")
+
+
+@tracker_app.command("set")
+def tracker_set(job: str, status: str, note: str = "") -> None:
+    """Change status (validated transitions, e.g. ready -> applied)."""
+    from careergraph.domain.status import InvalidTransition
+
+    with service() as svc:
+        try:
+            a = svc.set_status(job, status, note)
+        except (KeyError, InvalidTransition) as exc:
+            console.print(f"[red]{exc}[/]")
+            raise typer.Exit(1) from None
+        console.print(f"{a.job_id} -> {a.status}")
+
+
+@app.command()
+def demo() -> None:
+    """Full end-to-end demo with the fake LLM and fixtures (resets demo data only)."""
+    from careergraph.demo import run_demo
+
+    setup_logging(load_settings(log_format="console", log_level="WARNING"))
+    out = run_demo(console.print, on_event)
+    if out.status != "completed":
+        report(out)
+        raise typer.Exit(1)
+    console.print(
+        "\n[bold green]Demo complete.[/] Open the UI with: [bold]make ui[/] (http://127.0.0.1:8501)"
+    )
+
+
+@app.command()
+def ui() -> None:
+    """Start the Streamlit UI bound to UI_HOST:UI_PORT."""
+    import subprocess
+
+    from careergraph.config import REPO_ROOT
+
+    s = load_settings()
+    cmd = [
+        sys.executable,
+        "-m",
+        "streamlit",
+        "run",
+        str(REPO_ROOT / "ui" / "app.py"),
+        "--server.address",
+        s.ui_host,
+        "--server.port",
+        str(s.ui_port),
+        "--server.headless",
+        "true",
+        "--browser.gatherUsageStats",
+        "false",
+    ]
+    console.print(f"UI on http://{s.ui_host}:{s.ui_port}")
+    raise typer.Exit(subprocess.call(cmd))
+
+
+@app.command("docs-graphs")
+def docs_graphs(check: bool = typer.Option(False, help="fail if diagrams are stale (CI)")) -> None:
+    """Regenerate Mermaid diagrams from the compiled graphs into the READMEs."""
+    from careergraph.devtools.graph_docs import main as graph_docs_main
+
+    raise typer.Exit(graph_docs_main(["--check"] if check else []))
+
+
 def main() -> None:
     """Console entry point: render config errors without tracebacks."""
     try:

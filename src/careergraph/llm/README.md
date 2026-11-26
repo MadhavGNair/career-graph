@@ -25,6 +25,11 @@ flowchart LR
 - Static system prompts are sent as a content block with `cache_control: ephemeral` on
   Anthropic. Prompts below the provider's minimum cacheable length are silently not cached.
 
+## LangGraph concepts used and why
+Models are not graph nodes; nodes obtain them from the runtime context
+(`runtime.context.models.get_model(tier)`). `BudgetExceeded` raised inside a node stops the
+run; the checkpointer keeps everything done so far, so `resume` continues where it stopped.
+
 ## Key files
 | File | What |
 |---|---|
