@@ -14,19 +14,28 @@ from collections.abc import Callable
 from contextlib import ExitStack
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
+from pathlib import Path
 from typing import Any, Literal
 
 from langchain_core.runnables import RunnableConfig
 from langgraph.types import Command
 
 from careergraph.config import AppConfig, load_app_config
-from careergraph.domain.models import ProfileSnapshot, ReviewAction, ShortlistDecision
+from careergraph.domain.models import (
+    DocumentDraft,
+    ProfileSnapshot,
+    ReviewAction,
+    ShortlistDecision,
+)
 from careergraph.domain.status import ApplicationStatus
 from careergraph.graphs.job_search.graph import (
     build_job_search_graph,
     build_jobs_graph,
     build_profile_graph,
 )
+from careergraph.latex.compile import CompileResult
+from careergraph.latex.render import template_dirs, write_and_compile
+from careergraph.latex.sample import sample_documents
 from careergraph.llm.budget import BudgetExceeded
 from careergraph.observability import setup_tracing
 from careergraph.persistence.checkpoint import open_persistence
@@ -120,6 +129,9 @@ class CareerGraphService:
     def _config(thread_id: str, checkpoint_id: str | None = None) -> RunnableConfig:
         cfg: dict[str, Any] = {"thread_id": thread_id}
         if checkpoint_id:
+            # get_state() returns configs without checkpoint_ns, but the savers require it
+            # when writing (update_state), so it is always set for checkpoint-targeted configs.
+            cfg["checkpoint_ns"] = ""
             cfg["checkpoint_id"] = checkpoint_id
         return {"configurable": cfg}
 
@@ -287,7 +299,7 @@ class CareerGraphService:
         The fork becomes the thread's latest branch; the old branch stays in history.
         """
         target = self._config(thread_id, checkpoint_id)
-        if self.graph.get_state(target).values == {}:
+        if not self.graph.get_state(target).values:
             raise ValueError(f"unknown checkpoint {checkpoint_id} for {thread_id}")
         config = self.graph.update_state(target, updates, as_node=as_node) if updates else target
         return self._drive(thread_id, None, on_event, config=config)
@@ -311,6 +323,44 @@ class CareerGraphService:
         out = self.jobs_graph.invoke({"run_id": tid}, context=self.services)
         self.repo.upsert_run(tid, status="completed")
         return out
+
+    # ------------------------------------------------------------------ rendering
+    def _template_dirs(self) -> list[Path]:
+        s = self.cfg.settings
+        return template_dirs(
+            s.resolve(s.templates_dir), s.resolve(Path(self.cfg.profile.documents.dir))
+        )
+
+    def render(self, job_id: str) -> list[CompileResult]:
+        """Re-render a saved application's documents (e.g. after editing a template).
+
+        Raises:
+            ValueError: unknown job id.
+        """
+        app = self.repo.get_application(job_id)
+        if app is None:
+            raise ValueError(f"no saved application for {job_id}")
+        draft = DocumentDraft.model_validate(app.draft)
+        s = self.cfg.settings
+        _, _, results = write_and_compile(
+            draft.cv,
+            draft.letter,
+            self._template_dirs(),
+            Path(app.out_dir),
+            s.latex_engine,
+            s.latex_timeout_seconds,
+        )
+        return results
+
+    def render_sample(self) -> tuple[Path, list[CompileResult]]:
+        """Render the templates with sample data into OUTPUT_DIR/sample/."""
+        s = self.cfg.settings
+        cv, letter = sample_documents(self.cfg.profile)
+        out = s.resolve(s.output_dir) / "sample"
+        _, _, results = write_and_compile(
+            cv, letter, self._template_dirs(), out, s.latex_engine, s.latex_timeout_seconds
+        )
+        return out, results
 
     # ------------------------------------------------------------------ tracker + insights
     def list_applications(self) -> list[Application]:

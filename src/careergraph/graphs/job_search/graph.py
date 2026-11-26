@@ -12,14 +12,28 @@ from typing import Any, cast
 
 from langgraph.graph import END, START, StateGraph
 
+from careergraph.graphs.job_search.nodes.document_factory import document_factory
 from careergraph.graphs.job_search.nodes.extract_jobs import extract_jobs
 from careergraph.graphs.job_search.nodes.extract_profile import extract_profile
 from careergraph.graphs.job_search.nodes.find_jobs import find_jobs
+from careergraph.graphs.job_search.nodes.human_review import human_review
 from careergraph.graphs.job_search.nodes.human_shortlist import human_shortlist
 from careergraph.graphs.job_search.nodes.ingest_profile import ingest_profile
 from careergraph.graphs.job_search.nodes.match_jobs import match_jobs
-from careergraph.graphs.job_search.routing import fan_out_postings, profile_route
+from careergraph.graphs.job_search.nodes.render_latex import render_latex
+from careergraph.graphs.job_search.nodes.research_company import research_company
+from careergraph.graphs.job_search.nodes.save_results import save_results
+from careergraph.graphs.job_search.nodes.select_evidence import select_evidence
+from careergraph.graphs.job_search.routing import (
+    after_documents,
+    after_review,
+    after_shortlist,
+    fan_out_drafts,
+    fan_out_postings,
+    profile_route,
+)
 from careergraph.graphs.job_search.state import JobBranch, JobSearchState
+from careergraph.graphs.job_search.subgraphs.state import DocState
 from careergraph.service.wiring import Services
 
 Graph = StateGraph[JobSearchState, Services]
@@ -47,8 +61,25 @@ def build_job_search_graph() -> Graph:
     """The full graph with both human pauses."""
     g: Graph = StateGraph(JobSearchState, context_schema=Services)
     _profile_and_jobs(g, after_match="human_shortlist")
-    g.add_node("human_shortlist", human_shortlist)
-    g.add_edge("human_shortlist", END)
+    g.add_node("human_shortlist", human_shortlist)  # PAUSE 1
+    g.add_node("research_company", cast(Any, research_company), input_schema=DocState)
+    g.add_node("select_evidence", select_evidence)
+    g.add_node("document_factory", cast(Any, document_factory), input_schema=DocState)
+    g.add_node("human_review", human_review)  # PAUSE 2
+    g.add_node("render_latex", render_latex)
+    g.add_node("save_results", save_results)
+
+    g.add_conditional_edges(
+        "human_shortlist", after_shortlist, ["research_company", "select_evidence", "save_results"]
+    )
+    g.add_edge("research_company", "select_evidence")  # join after parallel research
+    g.add_conditional_edges("select_evidence", fan_out_drafts, ["document_factory"])
+    g.add_conditional_edges("document_factory", after_documents, ["human_review", "render_latex"])
+    g.add_conditional_edges(
+        "human_review", after_review, ["document_factory", "human_review", "render_latex"]
+    )
+    g.add_edge("render_latex", "save_results")
+    g.add_edge("save_results", END)
     return g
 
 
