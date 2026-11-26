@@ -1,0 +1,37 @@
+((# CareerGraph default cover letter. Variables: see templates/README.md. #))
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage[hidelinks]{hyperref}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{8pt}
+
+\begin{document}
+
+\textbf{((( letter.name )))}\\
+((* if letter.location *))
+((( letter.location )))\\
+((* endif *))
+((* if letter.email *))
+((( letter.email )))((* if letter.phone *)) \textbar{} ((( letter.phone )))((* endif *))
+((* endif *))
+
+\vspace{12pt}
+((( letter.company )))\\
+Re: ((( letter.role )))
+
+\hfill ((( letter.date )))
+
+((( letter.greeting )))
+
+((* for p in letter.paragraphs *))
+((( p.text )))
+
+((* endfor *))
+((( letter.closing )))\\[18pt]
+((( letter.name )))
+
+\end{document}

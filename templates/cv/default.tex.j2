@@ -1,0 +1,75 @@
+((# CareerGraph default CV. Variables: see templates/README.md. Every ((( ))) is LaTeX-escaped. #))
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1.8cm]{geometry}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\setlist[itemize]{leftmargin=1.2em,itemsep=1pt,topsep=2pt}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\newcommand{\cvsection}[1]{\vspace{8pt}{\large\bfseries #1}\par\vspace{2pt}\hrule\vspace{4pt}}
+
+\begin{document}
+
+{\LARGE\bfseries ((( cv.name )))}\par
+((* if cv.headline *))
+{\large ((( cv.headline )))}\par
+((* endif *))
+\vspace{2pt}
+((( cv.location )))((* if cv.email *)) \textbar{} \href{((( ("mailto:" ~ cv.email) | url )))}{((( cv.email )))}((* endif *))((* if cv.phone *)) \textbar{} ((( cv.phone )))((* endif *))
+((* for label, link in cv.links.items() *))
+ \textbar{} \href{((( link | url )))}{((( label )))}
+((* endfor *))
+\par
+
+((* if cv.summary *))
+\cvsection{Summary}
+((* for claim in cv.summary *))
+((( claim.text )))
+((* endfor *))
+\par
+((* endif *))
+
+\cvsection{Experience}
+((* for role in cv.experience *))
+\textbf{((( role.title )))}, ((( role.employer ))) \hfill ((( role.start ))) -- ((( role.end )))\par
+((* if role.location *))
+{\small ((( role.location )))}\par
+((* endif *))
+((* if role.bullets *))
+\begin{itemize}
+((* for claim in role.bullets *))
+  \item ((( claim.text )))
+((* endfor *))
+\end{itemize}
+((* endif *))
+\vspace{4pt}
+((* endfor *))
+
+((* if cv.projects *))
+\cvsection{Projects}
+\begin{itemize}
+((* for claim in cv.projects *))
+  \item ((( claim.text )))
+((* endfor *))
+\end{itemize}
+((* endif *))
+
+\cvsection{Education}
+((* for d in cv.education *))
+\textbf{((( d.degree )))((* if d.field *)) ((( d.field )))((* endif *))}, ((( d.institution ))) \hfill ((( d.start ))) -- ((( d.end )))\par
+((* endfor *))
+
+((* if cv.skills *))
+\cvsection{Skills}
+((( cv.skills | join(", ") )))\par
+((* endif *))
+
+((* if cv.languages *))
+\cvsection{Languages}
+((( cv.languages | join(", ") )))\par
+((* endif *))
+
+\end{document}
