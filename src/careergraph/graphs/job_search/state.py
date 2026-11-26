@@ -45,8 +45,9 @@ class JobSearchState(TypedDict, total=False):
     approved: list[str]
     # research + documents + second pause
     research: Annotated[dict[str, ResearchBrief], merge_by_key]
+    evidence_selection: dict[str, list[str]]
     drafts: Annotated[dict[str, DocumentDraft], merge_by_key]
-    redo: list[str]
+    redo: dict[str, str]
     review_errors: list[str]
     rendered: Annotated[dict[str, RenderResult], merge_by_key]
     summary: str
@@ -57,12 +58,3 @@ class JobBranch(TypedDict):
 
     run_id: str
     posting: JobPosting
-
-
-class DocBranch(TypedDict, total=False):
-    """Payload of one document_factory / research_company Send branch."""
-
-    run_id: str
-    job_id: str
-    draft: DocumentDraft | None
-    mode: str
