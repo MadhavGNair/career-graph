@@ -41,7 +41,7 @@ Never push. No live LLM calls. Never fabricate numbers (see CLAUDE.md).
 - [x] time travel: history, fork; demo command
 
 ## P6 UI
-- [ ] Streamlit pages (Run, Shortlist, Documents, Tracker, Insights) + AppTest smoke tests
+- [x] Streamlit pages (Run, Shortlist, Documents, Tracker, Insights) + AppTest smoke tests
 
 ## P7 Evals + CI
 - [ ] eval suites (match, extraction, verifier, injection), thresholds, reports, export-labels
