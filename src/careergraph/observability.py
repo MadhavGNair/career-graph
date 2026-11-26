@@ -6,6 +6,7 @@ import json
 import logging
 import os
 import sys
+import warnings
 from datetime import UTC, datetime
 from typing import Any
 
@@ -40,6 +41,9 @@ def setup_logging(settings: Settings) -> None:
     root = logging.getLogger()
     root.handlers[:] = [handler]
     root.setLevel(settings.log_level)
+    # ToolRuntime carries our Services object as `context`; pydantic warns when it serialises
+    # that field for tracing. Harmless, so it is silenced.
+    warnings.filterwarnings("ignore", message="Pydantic serializer warnings", category=UserWarning)
     for noisy in ("httpx", "httpcore", "urllib3", "anthropic"):
         logging.getLogger(noisy).setLevel(logging.WARNING)
 
