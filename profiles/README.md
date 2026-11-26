@@ -19,6 +19,17 @@ from `config/profile.yaml` verbatim.
 | `example/templates/` | put `cv/default.tex.j2` / `letter/default.tex.j2` here to override `templates/` |
 | `me/` | your real files (gitignored) |
 
+## LangGraph concepts used and why
+`ingest_profile` hashes these files; a conditional edge skips `extract_profile` when nothing
+changed and a cached extraction exists (no LLM cost on repeat runs).
+
+## Configuration
+`config/profile.yaml` `documents.dir`, `documents.include`, `documents.evidence_file`,
+`github.*`.
+
+## How to test
+`make profile` prints every extracted evidence item; `uv run pytest tests/test_profile.py`.
+
 ## evidence.yaml
 Add facts the extractor missed or phrase them exactly as you want them cited. Pinned items are
 merged into every extraction and keep their ids. Fields: `id` (optional, `ev-pNNN` style),

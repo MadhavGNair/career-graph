@@ -36,9 +36,9 @@ Never push. No live LLM calls. Never fabricate numbers (see CLAUDE.md).
 - [x] service layer + CLI (run, pending, shortlist, approve, resume)
 
 ## P5 Documents
-- [ ] document_factory subgraph (draft <-> verify loop, MAX_REVISIONS), research_company subgraph (ToolNode)
-- [ ] human_review interrupt (approve/edit/regenerate/reject, override), render_latex + templates, save_results
-- [ ] time travel: history, fork; demo command
+- [x] document_factory subgraph (draft <-> verify loop, MAX_REVISIONS), research_company subgraph (ToolNode)
+- [x] human_review interrupt (approve/edit/regenerate/reject, override), render_latex + templates, save_results
+- [x] time travel: history, fork; demo command
 
 ## P6 UI
 - [ ] Streamlit pages (Run, Shortlist, Documents, Tracker, Insights) + AppTest smoke tests
@@ -56,4 +56,5 @@ Never push. No live LLM calls. Never fabricate numbers (see CLAUDE.md).
 
 ## P10 Polish
 - [ ] README audit, node cards, `make docs-graphs` + freshness check, full verification
-- [ ] `NOT_YET_WIRED` in tests/test_drift_guard.py is empty
+- [x] `NOT_YET_WIRED` in tests/test_drift_guard.py is empty (emptied in P5)
+- [ ] tests/test_docs.py PENDING set is empty

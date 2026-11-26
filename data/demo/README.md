@@ -38,6 +38,10 @@ Strong, medium and weak fits; 3 prompt-injection payloads (plain text, hidden HT
 age; red flags (`unpaid`, `rockstar`, `24/7`); salaries in EUR, GBP and USD; dates spread
 over ~10 weeks for the skills-demand chart.
 
+## LangGraph concepts used and why
+The fixtures make the whole graph deterministic, so tests can assert exact routing (which
+jobs fan out, which draft revises), interrupts, crash resume and time travel.
+
 ## Configuration
 `APP_MODE=demo` selects this folder for search and profile. `DEMO_FABRICATE_JOB`
 (default `gh-nimbus-analytics-4001`) makes the first draft for that job contain a fabricated

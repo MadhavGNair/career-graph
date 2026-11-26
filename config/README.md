@@ -29,6 +29,10 @@ flowchart LR
 | `skills.yaml` | alias normalisation and related skills | profile + job extraction, matching |
 | `pricing.yaml` | optional per-model prices (shipped empty) | budgets, doctor, insights |
 
+## LangGraph concepts used and why
+None directly: config reaches nodes through the runtime context (`Services.cfg`), so graph
+code never reads files or environment variables and stays identical in demo and live mode.
+
 ## Demo vs live
 In demo mode `search.yaml` and `profile.yaml` are read from `data/demo/` (fictional companies
 and the fictional user Sam Demo) so the demo is reproducible. `criteria.yaml`, `skills.yaml`
@@ -42,6 +46,11 @@ and `pricing.yaml` are always read from here, so you can experiment with scoring
 
 ## How to test
 `make doctor` (or `uv run careergraph validate-config`) and `uv run pytest tests/test_config.py`.
+
+## Design decisions and trade-offs
+YAML for things you tune often (readable, commentable, diffable), `.env` for secrets and
+switches (12-factor, works in Docker/Kubernetes). Strict models catch typos at startup instead
+of silently ignoring a misspelled key; the cost is that unknown keys are errors.
 
 ## Gotchas
 - Weights are relative; they are normalised to sum to 1.

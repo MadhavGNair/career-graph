@@ -61,4 +61,53 @@ Set `APP_MODE=live` and `ANTHROPIC_API_KEY` in `.env`, fill `config/profile.yaml
 in `profiles/me/`, add real board slugs to `config/search.yaml`, then `make doctor`.
 Details: [docs/live-mode.md](docs/live-mode.md).
 
-<!-- The architecture, concepts, costs, security, evals and deployment sections follow. -->
+## Architecture
+
+<!-- graph:job_search:start -->
+```mermaid
+---
+config:
+  flowchart:
+    curve: linear
+---
+graph TD;
+	__start__([<p>__start__</p>]):::first
+	ingest_profile(ingest_profile)
+	extract_profile(extract_profile)
+	find_jobs(find_jobs)
+	extract_jobs(extract_jobs)
+	match_jobs(match_jobs)
+	human_shortlist(human_shortlist)
+	research_company(research_company)
+	select_evidence(select_evidence)
+	document_factory(document_factory)
+	human_review(human_review)
+	render_latex(render_latex)
+	save_results(save_results)
+	__end__([<p>__end__</p>]):::last
+	__start__ --> ingest_profile;
+	document_factory -.-> human_review;
+	document_factory -.-> render_latex;
+	extract_jobs --> match_jobs;
+	extract_profile --> find_jobs;
+	find_jobs -.-> extract_jobs;
+	find_jobs -.-> match_jobs;
+	human_review -.-> document_factory;
+	human_review -.-> render_latex;
+	human_shortlist -.-> research_company;
+	human_shortlist -.-> save_results;
+	human_shortlist -.-> select_evidence;
+	ingest_profile -. &nbsp;extract&nbsp; .-> extract_profile;
+	ingest_profile -. &nbsp;cached&nbsp; .-> find_jobs;
+	match_jobs --> human_shortlist;
+	render_latex --> save_results;
+	research_company --> select_evidence;
+	select_evidence -.-> document_factory;
+	save_results --> __end__;
+	human_review -.-> human_review;
+	classDef default fill:#f2f0ff,line-height:1.2
+	classDef first fill-opacity:0
+	classDef last fill:#bfb6fc
+```
+<!-- graph:job_search:end -->
+
