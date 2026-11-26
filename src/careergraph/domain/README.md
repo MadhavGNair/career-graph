@@ -35,6 +35,9 @@ built from these models (`ShortlistDecision`, `ReviewAction`) and validated on r
 - `DocumentDraft.patch` edits are keyed by claim id (`cv.summary.0`, `letter.paragraphs.1`)
   so the UI and CLI can edit a single sentence and re-verify it.
 
+## Configuration
+None. Schemas are code; user-facing values come from `config/` and `.env`.
+
 ## How to test
 `uv run pytest tests/test_llm.py tests/test_tracker.py` (schemas are exercised everywhere).
 

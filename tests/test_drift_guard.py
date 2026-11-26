@@ -37,30 +37,7 @@ YAML_MODELS: dict[str, type[BaseModel]] = {
 }
 # Scaffolding allowlist: knobs documented before the feature that uses them is built.
 # PLAN.md tracks it; it MUST be empty when P10 is done (test_not_yet_wired_is_empty_at_release).
-NOT_YET_WIRED: set[str] = {
-    "config_dir",
-    "database_url",
-    "degree",
-    "education",
-    "email",
-    "embedding_backend",
-    "end",
-    "experience",
-    "field",
-    "institution",
-    "language",
-    "latex_timeout_seconds",
-    "links",
-    "max_revisions",
-    "output_dir",
-    "phone",
-    "require_document_review",
-    "research_max_steps",
-    "research_max_tokens",
-    "semantic",
-    "start",
-    "templates_dir",
-}
+NOT_YET_WIRED: set[str] = set()
 
 ENV_READ = re.compile(r"""os\.(?:environ\.get|getenv|environ\[)\(?\s*["']([A-Z][A-Z0-9_]*)["']""")
 
@@ -75,12 +52,19 @@ def _documented_env() -> dict[str, int]:
 
 
 def _code_text(exclude: Path | None = None) -> str:
+    """All Python code (minus `exclude`) plus the LaTeX templates, which read profile fields."""
     parts = []
     for d in CODE_DIRS:
         for p in d.rglob("*.py"):
             if p != exclude:
                 parts.append(p.read_text())
+    parts += [p.read_text() for p in (REPO_ROOT / "templates").rglob("*.j2")]
     return "\n".join(parts)
+
+
+def _used(name: str, code: str) -> bool:
+    """Attribute access (`.name`) or a quoted key (`"name"`, e.g. criterion weights by name)."""
+    return bool(re.search(rf"\.{name}\b|[\"']{name}[\"']", code))
 
 
 def _model_fields(model: type[BaseModel]) -> set[str]:
@@ -116,12 +100,8 @@ def test_code_reads_only_documented_env_vars() -> None:
 
 
 def test_every_setting_is_used_by_code() -> None:
-    code = _code_text(exclude=CONFIG_FILE)
-    unused = [
-        f
-        for f in Settings.model_fields
-        if f not in NOT_YET_WIRED and not re.search(rf"\.{f}\b", code)
-    ]
+    code = _code_text()  # config.py properties (db_url, search_config_path...) are real uses
+    unused = [f for f in Settings.model_fields if f not in NOT_YET_WIRED and not _used(f, code)]
     assert unused == [], f"documented but unused settings: {unused}"
 
 
@@ -129,9 +109,7 @@ def test_every_setting_is_used_by_code() -> None:
 def test_every_yaml_key_is_used_by_code(filename: str) -> None:
     code = _code_text(exclude=CONFIG_FILE)
     fields = _model_fields(YAML_MODELS[filename])
-    unused = sorted(
-        f for f in fields if f not in NOT_YET_WIRED and not re.search(rf"\.{f}\b", code)
-    )
+    unused = sorted(f for f in fields if f not in NOT_YET_WIRED and not _used(f, code))
     assert unused == [], f"{filename}: documented but unused keys: {unused}"
 
 
@@ -160,6 +138,6 @@ def test_settings_reads_dotenv_from_repo_root() -> None:
 
 def test_not_yet_wired_entries_are_really_unused() -> None:
     """Shrink NOT_YET_WIRED as features land: an entry that is now used must be removed."""
-    code = _code_text(exclude=CONFIG_FILE)
-    stale = sorted(n for n in NOT_YET_WIRED if re.search(rf"\.{n}\b", code))
+    code = _code_text()
+    stale = sorted(n for n in NOT_YET_WIRED if _used(n, code))
     assert stale == [], f"remove from NOT_YET_WIRED (now used): {stale}"

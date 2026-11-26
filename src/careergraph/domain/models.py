@@ -372,8 +372,14 @@ class DocumentDraft(BaseModel):
     revision_count: int = 0
     critique: str = ""
     critique_log: list[str] = Field(default_factory=list)
+    notes: list[str] = Field(default_factory=list)
     status: DraftStatus = "drafted"
     override: bool = False
+
+    @property
+    def flagged(self) -> bool:
+        """Still has unsupported claims or fact errors."""
+        return not self.report.ok
 
 
 class ReviewAction(BaseModel):
