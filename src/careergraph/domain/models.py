@@ -405,3 +405,64 @@ class RenderResult(BaseModel):
     cv_pdf: str | None = None
     letter_pdf: str | None = None
     compile_message: str = ""
+
+
+# ----------------------------------------------------------------- tracker / interviews
+
+
+class InterviewQuestion(BaseModel):
+    """A likely interview question."""
+
+    id: str
+    text: str
+    kind: Literal["technical", "behavioral", "company"]
+    skill: str = ""
+
+
+class StarStory(BaseModel):
+    """A STAR story built only from evidence."""
+
+    title: str
+    situation: str
+    task: str
+    action: str
+    result: str
+    evidence_ids: list[str] = Field(default_factory=list)
+
+
+class StoryDraft(BaseModel):
+    """LLM output for interview story building."""
+
+    stories: list[StarStory]
+
+
+class InterviewPrep(BaseModel):
+    """Prep pack for one application."""
+
+    job_id: str
+    questions: list[InterviewQuestion] = Field(default_factory=list)
+    stories: list[StarStory] = Field(default_factory=list)
+    research: ResearchBrief | None = None
+
+
+class AnswerScore(BaseModel):
+    """LLM output: a mock-interview answer scored against the rubric (1-5 each)."""
+
+    structure: int = Field(description="1-5: situation, task, action, result are clear")
+    relevance: int = Field(description="1-5: answers the question asked")
+    specificity: int = Field(description="1-5: concrete facts, numbers, own contribution")
+    conciseness: int = Field(description="1-5: roughly 1-2 minutes spoken")
+    feedback: str = ""
+
+    @property
+    def overall(self) -> float:
+        """Mean of the four rubric scores."""
+        return (self.structure + self.relevance + self.specificity + self.conciseness) / 4
+
+
+class MockTurn(BaseModel):
+    """One question/answer/score turn."""
+
+    question: InterviewQuestion
+    answer: str
+    score: AnswerScore

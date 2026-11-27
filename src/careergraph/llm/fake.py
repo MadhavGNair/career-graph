@@ -605,6 +605,8 @@ class FakeChat:
             "draft_documents": lambda p: fake_draft(p, fabricate_job_ids),
             "verify_claim": fake_verify,
             "research_brief": fake_research_brief,
+            "interview_stories": fake_stories,
+            "score_answer": fake_score,
         }
         self._handlers = handlers
 
@@ -659,3 +661,59 @@ class FakeChat:
         }
         self._record(task, run_id, inp, out)
         return msg
+
+
+# ------------------------------------------------------------------- interviews
+
+
+def fake_stories(payload: dict[str, Any]) -> BaseModel:
+    """One STAR story per evidence item, quoting the evidence (no invented outcomes)."""
+    from careergraph.domain.models import StarStory, StoryDraft
+
+    stories = []
+    for e in payload["evidence"][:4]:
+        skill = (e["skills"] or ["this work"])[0]
+        nums = _NUM.findall(e["text"])
+        stories.append(
+            StarStory(
+                title=f"{skill}: {e['text'][:60].rstrip()}",
+                situation=f"Context from {e['source_ref'] or 'my experience'}.",
+                task=f"Deliver work involving {skill}.",
+                action=_sentence(e["text"]),
+                result=f"Outcome stated in the evidence ({', '.join(nums)})."
+                if nums
+                else "Delivered as described.",
+                evidence_ids=[e["id"]],
+            )
+        )
+    return StoryDraft(stories=stories)
+
+
+def fake_score(payload: dict[str, Any]) -> BaseModel:
+    """Rubric heuristics: STAR cue words, overlap with the question, numbers, length."""
+    from careergraph.domain.models import AnswerScore
+
+    answer, question = payload["answer"], payload["question"]
+    words = len(answer.split())
+    cues = sum(
+        bool(re.search(p, answer, re.I))
+        for p in (
+            r"\bsituation|\bwhen\b|\bat \w+",
+            r"\btask|\bgoal|\bneeded",
+            r"\bI (built|led|designed|wrote|did|created)",
+            r"\bresult|\bso that|\breduc|\bincreas",
+        )
+    )
+    overlap = len(content_tokens(answer) & content_tokens(question))
+    clamp = lambda v: max(1, min(5, v))  # noqa: E731
+    score = AnswerScore(
+        structure=clamp(1 + cues),
+        relevance=clamp(1 + overlap),
+        specificity=clamp(1 + 2 * len(_NUM.findall(answer)) + (1 if " I " in f" {answer} " else 0)),
+        conciseness=5 if 80 <= words <= 250 else 3 if 30 <= words <= 350 else 1,
+    )
+    weakest = min(
+        ("structure", "relevance", "specificity", "conciseness"), key=lambda k: getattr(score, k)
+    )
+    score.feedback = f"Strongest gain available in {weakest}. Answer had {words} words."
+    return score
