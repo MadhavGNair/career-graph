@@ -176,6 +176,17 @@ class Repository:
             row = s.get(Analysis, content_hash)
             return AnalyzedJob.model_validate(row.data) if row else None
 
+    def cached_analysis_by_posting(self, posting_id: str) -> AnalyzedJob | None:
+        """Latest analysis stored for a posting id (offline re-scoring for evals)."""
+        with self._s() as s:
+            q = (
+                select(Analysis)
+                .where(Analysis.posting_id == posting_id)
+                .order_by(Analysis.created_at.desc())
+            )
+            row = s.scalars(q).first()
+            return AnalyzedJob.model_validate(row.data) if row else None
+
     def save_analysis(self, job: AnalyzedJob) -> None:
         """Persist posting, analysis and normalised requirements (for the trend chart)."""
         p = job.posting

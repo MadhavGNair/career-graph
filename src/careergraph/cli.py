@@ -374,6 +374,66 @@ def ui() -> None:
     raise typer.Exit(subprocess.call(cmd))
 
 
+eval_app = typer.Typer(help="Evaluation suites")
+app.add_typer(eval_app, name="eval")
+
+
+@eval_app.command("run")
+def eval_run(
+    suite: str = typer.Option("all", help="all | match | extraction | verifier | injection"),
+    mode: str = typer.Option("fake", help="fake (CI gate) | live (real models, costs tokens)"),
+    labels: str = typer.Option(
+        "", help="match only: YAML from `eval export-labels` (offline re-score)"
+    ),
+) -> None:
+    """Run eval suites, write Markdown + JSON reports, exit 1 if a fake-mode gate fails."""
+    from pathlib import Path
+
+    from careergraph.evals.report import DISCLAIMER, write_reports
+    from careergraph.evals.suites import SUITES, SuiteResult, match_suite_from_labels, run_suite
+
+    settings = load_settings()
+    setup_logging(settings.model_copy(update={"log_level": "WARNING"}))
+    if mode not in ("fake", "live"):
+        raise typer.BadParameter("mode must be fake or live")
+    results: list[SuiteResult] = []
+    if labels:
+        with service() as svc:
+            results.append(match_suite_from_labels(svc.cfg, svc.repo, Path(labels), svc.store))
+    else:
+        for name in SUITES if suite == "all" else [suite]:
+            results.append(run_suite(name, settings, mode))  # type: ignore[arg-type]
+    if mode == "fake" and not labels:
+        console.print(f"[dim]{DISCLAIMER}[/]")
+    for r in results:
+        status = "[green]PASS[/]" if r.passed else f"[red]FAIL {r.failures}[/]"
+        metrics = ", ".join(f"{k}={v:.3f}" for k, v in sorted(r.metrics.items()))
+        console.print(f"{r.suite:10} {status} {metrics}")
+    js, md = write_reports(results, settings.resolve(settings.output_dir) / "evals")
+    console.print(f"reports: {md} {js}")
+    if not all(r.passed for r in results):
+        raise typer.Exit(1)
+
+
+@eval_app.command("export-labels")
+def eval_export_labels(
+    out: str = typer.Option("", help="output YAML (default OUTPUT_DIR/evals/my_labels.yaml)"),
+) -> None:
+    """Turn your own approve/reject decisions into an eval dataset."""
+    from pathlib import Path
+
+    from careergraph.evals.report import export_labels
+
+    with service() as svc:
+        s = svc.cfg.settings
+        target = Path(out) if out else s.resolve(s.output_dir) / "evals" / "my_labels.yaml"
+        n = export_labels(svc.repo, target)
+        console.print(
+            f"exported {n} labels to {target}. Re-score offline with: "
+            f"careergraph eval run --suite match --labels {target}"
+        )
+
+
 @app.command("docs-graphs")
 def docs_graphs(check: bool = typer.Option(False, help="fail if diagrams are stale (CI)")) -> None:
     """Regenerate Mermaid diagrams from the compiled graphs into the READMEs."""

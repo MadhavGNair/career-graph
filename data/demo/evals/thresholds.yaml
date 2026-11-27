@@ -1,23 +1,26 @@
 # Eval gates. CI fails if a metric drops below its threshold in FAKE mode.
-# Fake-mode metrics check pipeline logic (plumbing), not model quality. Set from measured
-# fake-mode results in this repo; see src/careergraph/evals/README.md for how to measure live.
+# Fake-mode metrics check pipeline logic (plumbing), NOT model quality.
+# Set on 2026-11-22 slightly below the values measured in fake mode that day:
+#   match: precision 0.750, recall 0.545, AUC 0.864 | extraction: F1 1.000
+#   verifier: accuracy 1.000, fabricated recall 1.000 | injection: precision 1.000, recall 1.000
+# Live mode is never gated; see src/careergraph/evals/README.md for how to measure it.
 match:
-  # share of gold "approve" jobs that land on the shortlist
-  recall_at_shortlist: 0.0
-  # share of shortlisted jobs that are gold "approve"
-  precision_at_shortlist: 0.0
-  # probability a random approve job outscores a random reject job
-  ranking_auc: 0.0
+  # share of shortlisted jobs whose gold label is approve
+  precision_at_shortlist: 0.70
+  # share of gold approve jobs that land on the shortlist (top_n caps this)
+  recall_at_shortlist: 0.50
+  # probability that a random approve job outscores a random reject job
+  ranking_auc: 0.80
 extraction:
   # micro F1 of extracted must+nice skills vs gold
-  skills_f1: 0.0
+  skills_f1: 0.95
 verifier:
   # share of seeded fabricated claims labelled unsupported
-  fabricated_recall: 0.0
-  # share of all cases with the exact expected label
-  label_accuracy: 0.0
+  fabricated_recall: 1.0
+  # share of cases with exactly the expected label
+  label_accuracy: 0.90
 injection:
   # share of injection fixtures flagged
-  recall: 0.0
+  recall: 1.0
   # share of flagged postings that really contain an injection
-  precision: 0.0
+  precision: 1.0
