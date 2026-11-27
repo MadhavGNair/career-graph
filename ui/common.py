@@ -57,6 +57,8 @@ def show_outcome(out: RunOutcome) -> None:
     elif out.status == "waiting_review":
         st.success(f"Paused for document review: {out.thread_id}")
         st.info("Next: open the Documents page in the sidebar.")
+    elif out.status == "waiting_mock_interview":
+        st.info("Next question is ready (Tracker page, Mock interview).")
     elif out.status == "completed":
         st.success(f"Completed {out.thread_id}")
         st.text(out.summary)

@@ -9,8 +9,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import streamlit as st
 
-from careergraph.domain.status import TRANSITIONS, ApplicationStatus, InvalidTransition
-from common import get_service, page_setup
+from careergraph.domain.status import TRANSITIONS, ApplicationStatus
+from common import get_service, page_setup, pending_of, show_outcome
 
 page_setup("Tracker")
 svc = get_service()
@@ -40,11 +40,11 @@ if allowed:
         new = st.selectbox("New status", allowed)
         note = st.text_input("Note")
         if st.form_submit_button("Update"):
-            try:
-                svc.set_status(job, new, note)
-                st.success(f"{job}: {current} -> {new}")
-            except InvalidTransition as exc:
-                st.error(str(exc))
+            out = svc.change_status(job, new, note)
+            if out.status == "waiting_mock_interview":
+                st.success("Interview prep ready. Practise below.")
+            else:
+                show_outcome(out)
 else:
     st.caption(f"{current} is final.")
 st.caption("History")
@@ -55,3 +55,21 @@ st.dataframe(
     ],
     hide_index=True,
 )
+
+st.subheader("Mock interview")
+threads = pending_of(svc, "mock_interview")
+if not threads:
+    st.caption('Set an application to "interview" for prep questions, STAR stories and practice.')
+else:
+    thread = st.selectbox("Interview thread", threads)
+    payload = svc.pending_payload(thread) or {}
+    q = payload.get("question", {})
+    st.write(
+        f"**Question {payload.get('turn')}/{payload.get('of')}** ({q.get('kind')}): {q.get('text')}"
+    )
+    if payload.get("story_hints"):
+        st.caption("Your STAR stories: " + "; ".join(payload["story_hints"]))
+    with st.form("answer"):
+        answer = st.text_area("Your answer (/stop to finish)")
+        if st.form_submit_button("Submit answer") and answer:
+            show_outcome(svc.answer_mock(thread, answer))

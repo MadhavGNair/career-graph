@@ -52,7 +52,7 @@ Never push. No live LLM calls. Never fabricate numbers (see CLAUDE.md).
 - [x] docs: architecture, security, costs, live-mode, ADRs (>= 7)
 
 ## P9 Extras (only if all green)
-- [ ] tracker graph, interview_prep, mock_interview
+- [x] tracker graph, interview_prep, mock_interview
 
 ## P10 Polish
 - [ ] README audit, node cards, `make docs-graphs` + freshness check, full verification
