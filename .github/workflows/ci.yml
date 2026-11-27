@@ -1,0 +1,81 @@
+# CI: lint, types, tests, fake-mode eval gate, diagram freshness, PII guard, docker build
+# (no push), helm lint + kubeconform. Action versions verified 2026-11-22.
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    env:
+      APP_MODE: demo
+      LATEX_ENGINE: none
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.4.0  # no floating v10 tag exists
+        with:
+          enable-cache: true
+          python-version: "3.12"
+      - run: uv sync --locked
+      - name: PII / secret guard
+        run: uv run python -m careergraph.devtools.pii_guard
+      - name: Lint
+        run: |
+          uv run ruff check src tests ui
+          uv run ruff format --check src tests ui
+      - name: Typecheck
+        run: uv run pyright
+      - name: Tests (incl. headless demo smoke + Streamlit AppTest)
+        run: uv run pytest --cov=careergraph --cov-report=term
+      - name: Eval gate (fake mode = pipeline logic, not model quality)
+        run: uv run careergraph eval run --suite all --mode fake
+      - name: Graph diagrams are fresh
+        run: uv run careergraph docs-graphs --check
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: eval-reports
+          path: outputs/evals/
+          if-no-files-found: ignore
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: docker/setup-buildx-action@v4
+      - uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: deploy/docker/Dockerfile
+          target: runtime
+          push: false
+          load: true
+          tags: careergraph:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Image smoke test (doctor in demo mode)
+        run: docker run --rm careergraph:ci careergraph doctor
+
+  helm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: azure/setup-helm@v5
+        with:
+          version: v4.0.1
+      - name: Install kubeconform v0.8.0 (checksum verified)
+        run: |
+          base=https://github.com/yannh/kubeconform/releases/download/v0.8.0
+          curl -fsSLO "$base/kubeconform-linux-amd64.tar.gz"
+          curl -fsSLO "$base/CHECKSUMS"
+          grep " kubeconform-linux-amd64.tar.gz$" CHECKSUMS | sha256sum -c -
+          tar -xzf kubeconform-linux-amd64.tar.gz kubeconform
+          sudo mv kubeconform /usr/local/bin/
+      - run: bash deploy/helm/lint.sh

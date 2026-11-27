@@ -44,8 +44,8 @@ Never push. No live LLM calls. Never fabricate numbers (see CLAUDE.md).
 - [x] Streamlit pages (Run, Shortlist, Documents, Tracker, Insights) + AppTest smoke tests
 
 ## P7 Evals + CI
-- [ ] eval suites (match, extraction, verifier, injection), thresholds, reports, export-labels
-- [ ] workflows: ci, security, release, live-eval, dependabot, PR template
+- [x] eval suites (match, extraction, verifier, injection), thresholds, reports, export-labels
+- [x] workflows: ci, security, release, live-eval, dependabot, PR template
 
 ## P8 Delivery
 - [ ] Dockerfile (+ latex target), compose (postgres, cron profiles), Helm chart, ArgoCD, k3s guide

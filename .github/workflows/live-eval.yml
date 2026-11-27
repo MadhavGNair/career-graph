@@ -1,0 +1,40 @@
+# Manual only: run evals against REAL models on the fictional fixtures. Costs tokens.
+# Requires the repo secret ANTHROPIC_API_KEY. Spending is capped by the env below.
+name: live-eval
+on:
+  workflow_dispatch:
+    inputs:
+      suite:
+        description: "all | match | extraction | verifier | injection"
+        default: verifier
+        required: true
+      max_tokens:
+        description: "MAX_TOKENS_PER_RUN cap for each suite"
+        default: "60000"
+        required: true
+permissions:
+  contents: read
+
+jobs:
+  live-eval:
+    runs-on: ubuntu-latest
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      MAX_TOKENS_PER_RUN: ${{ inputs.max_tokens }}
+      MAX_TOKENS_PER_DAY: "300000"
+      LATEX_ENGINE: none
+      EMBEDDING_BACKEND: hashing
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.4.0
+        with:
+          enable-cache: true
+          python-version: "3.12"
+      - run: uv sync --locked
+      - name: Live eval (not gated; results are uploaded for comparison)
+        run: uv run careergraph eval run --suite "${{ inputs.suite }}" --mode live
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: live-eval-reports
+          path: outputs/evals/
