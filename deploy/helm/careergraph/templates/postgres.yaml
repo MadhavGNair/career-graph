@@ -1,0 +1,62 @@
+{{- if .Values.postgres.enabled }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "cg.name" . }}-postgres
+  labels: {{- include "cg.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ include "cg.name" . }}-postgres
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: careergraph-postgres
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: careergraph-postgres
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: postgres
+          image: {{ .Values.postgres.image }}
+          env:
+            - name: POSTGRES_DB
+              value: {{ .Values.postgres.database }}
+            - name: POSTGRES_USER
+              value: {{ .Values.postgres.database }}
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef: {name: {{ include "cg.secretName" . }}, key: {{ .Values.postgres.passwordKey }}}
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          ports:
+            - containerPort: 5432
+          readinessProbe:
+            exec:
+              command: ["pg_isready", "-U", {{ .Values.postgres.database | quote }}]
+          volumeMounts:
+            - name: pgdata
+              mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+    - metadata:
+        name: pgdata
+      spec:
+        accessModes: [ReadWriteOnce]
+        resources:
+          requests:
+            storage: {{ .Values.postgres.size }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "cg.name" . }}-postgres
+  labels: {{- include "cg.labels" . | nindent 4 }}
+spec:
+  clusterIP: None
+  selector:
+    app.kubernetes.io/name: careergraph-postgres
+    app.kubernetes.io/instance: {{ .Release.Name }}
+  ports:
+    - port: 5432
+{{- end }}

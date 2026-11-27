@@ -1,0 +1,32 @@
+{{- if .Values.cron.enabled }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "cg.name" . }}-run
+  labels: {{- include "cg.labels" . | nindent 4 }}
+spec:
+  schedule: {{ .Values.cron.schedule | quote }}
+  concurrencyPolicy: {{ .Values.cron.concurrencyPolicy }}
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 0  # a failed run is checkpointed; resume it from the UI instead of retrying blindly
+      template:
+        metadata:
+          labels: {{- include "cg.selector" . | nindent 12 }}
+        spec:
+          restartPolicy: Never
+          securityContext: {{- toYaml .Values.podSecurityContext | nindent 12 }}
+          containers:
+            - name: run
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              args: ["careergraph", "run"]
+              env: {{- include "cg.env" . | nindent 16 }}
+              envFrom: {{- include "cg.envFrom" . | nindent 16 }}
+              resources: {{- toYaml .Values.cron.resources | nindent 16 }}
+              securityContext: {{- include "cg.containerSecurity" . | nindent 16 }}
+              volumeMounts: {{- include "cg.mounts" . | nindent 16 }}
+          volumes: {{- include "cg.volumes" . | nindent 12 }}
+{{- end }}

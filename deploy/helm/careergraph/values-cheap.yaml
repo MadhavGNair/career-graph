@@ -1,0 +1,15 @@
+# Sized for one small node (e.g. a 2 vCPU / 4 GB VM running k3s). SQLite on local-path.
+ui:
+  resources:
+    requests: {cpu: 50m, memory: 384Mi}
+    limits: {memory: 1Gi}
+cron:
+  schedule: "0 6 * * 1-5"
+  resources:
+    requests: {cpu: 50m, memory: 384Mi}
+    limits: {memory: 1Gi}
+persistence:
+  size: 1Gi
+  storageClass: local-path
+postgres:
+  enabled: false

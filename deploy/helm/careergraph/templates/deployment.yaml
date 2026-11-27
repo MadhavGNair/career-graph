@@ -1,0 +1,44 @@
+{{- if .Values.ui.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cg.name" . }}
+  labels: {{- include "cg.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.ui.replicas }}
+  strategy:
+    type: Recreate  # single writer on the data volume
+  selector:
+    matchLabels: {{- include "cg.selector" . | nindent 6 }}
+  template:
+    metadata:
+      labels: {{- include "cg.selector" . | nindent 8 }}
+    spec:
+      securityContext: {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: ui
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args: ["careergraph", "ui"]
+          ports:
+            - name: http
+              containerPort: {{ .Values.ui.port }}
+          env:
+            - name: UI_HOST
+              value: "0.0.0.0"
+            - name: UI_PORT
+              value: {{ .Values.ui.port | quote }}
+            {{- include "cg.env" . | nindent 12 }}
+          envFrom: {{- include "cg.envFrom" . | nindent 12 }}
+          readinessProbe:
+            httpGet: {path: /_stcore/health, port: http}
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: {path: /_stcore/health, port: http}
+            initialDelaySeconds: 30
+            periodSeconds: 30
+          resources: {{- toYaml .Values.ui.resources | nindent 12 }}
+          securityContext: {{- include "cg.containerSecurity" . | nindent 12 }}
+          volumeMounts: {{- include "cg.mounts" . | nindent 12 }}
+      volumes: {{- include "cg.volumes" . | nindent 8 }}
+{{- end }}

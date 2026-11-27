@@ -1,0 +1,102 @@
+# CareerGraph Helm values. Every key is commented. Secrets go in a Secret, never here.
+
+image:
+  # Image repository (e.g. ghcr.io/<you>/careergraph after `release.yml`)
+  repository: ghcr.io/REPLACE_ME/careergraph
+  # Image tag
+  tag: "0.1.0"
+  # Pull policy
+  pullPolicy: IfNotPresent
+
+# Plain (non-secret) environment variables, see .env.example for every option.
+env:
+  APP_MODE: live
+  APP_ENV: production
+  LOG_FORMAT: json
+  LATEX_ENGINE: auto
+
+secret:
+  # Create a Secret from `secret.values` (convenient, but values then live in your values file).
+  create: false
+  # Name of an existing Secret with keys like ANTHROPIC_API_KEY, UI_PASSWORD, GITHUB_TOKEN,
+  # DATABASE_URL (recommended: create it with kubectl or a secrets manager).
+  existingSecret: careergraph-secrets
+  # Only used when create=true
+  values: {}
+
+# Your config/*.yaml files. Empty = use the defaults baked into the image.
+# Example: helm install ... --set-file config.search\.yaml=config/search.yaml
+config: {}
+
+profile:
+  # Existing Secret whose keys are your profile files (cv.md, evidence.yaml, ...), mounted
+  # read-only at /app/profiles/me. Empty = no personal documents (demo mode only).
+  existingSecret: ""
+
+ui:
+  # Run the Streamlit UI Deployment
+  enabled: true
+  # Replicas (keep 1: SQLite and the in-process service are single-writer)
+  replicas: 1
+  # Container port
+  port: 8501
+  resources:
+    requests: {cpu: 100m, memory: 512Mi}
+    limits: {memory: 1536Mi}
+
+cron:
+  # Run `careergraph run` on a schedule (it stops at the shortlist pause; approve in the UI)
+  enabled: true
+  # Cron schedule (UTC)
+  schedule: "0 6 * * *"
+  # Do not start a new run while one is still going
+  concurrencyPolicy: Forbid
+  resources:
+    requests: {cpu: 100m, memory: 512Mi}
+    limits: {memory: 1536Mi}
+
+persistence:
+  # PVC for /data (SQLite + caches) and /outputs (rendered documents)
+  enabled: true
+  # Size of the volume
+  size: 2Gi
+  # StorageClass ("" = cluster default, e.g. local-path on k3s)
+  storageClass: ""
+  # Access mode. ReadWriteOnce works on a single node (k3s); use Postgres for multi-node.
+  accessMode: ReadWriteOnce
+
+postgres:
+  # Deploy a small in-cluster Postgres and point DATABASE_URL at it
+  enabled: false
+  # Postgres image
+  image: postgres:17-alpine
+  # Database/user name
+  database: careergraph
+  # Key in `secret.existingSecret` holding POSTGRES_PASSWORD
+  passwordKey: POSTGRES_PASSWORD
+  # Data volume size
+  size: 2Gi
+
+service:
+  # Service type for the UI
+  type: ClusterIP
+  # Service port
+  port: 80
+
+ingress:
+  # Expose the UI through an Ingress (set UI_PASSWORD in the Secret first!)
+  enabled: false
+  # Ingress class (k3s ships traefik)
+  className: traefik
+  # Hostname
+  host: careergraph.example.com
+  # TLS secret name ("" = no TLS block)
+  tlsSecret: ""
+  # Extra annotations
+  annotations: {}
+
+# Pod security: non-root user from the image (uid 10001)
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 10001
+  fsGroup: 10001

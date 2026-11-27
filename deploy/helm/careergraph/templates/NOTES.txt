@@ -1,0 +1,9 @@
+CareerGraph {{ .Chart.AppVersion }} installed as {{ include "cg.name" . }}.
+
+UI:  kubectl port-forward svc/{{ include "cg.name" . }} 8501:{{ .Values.service.port }}  -> http://127.0.0.1:8501
+{{- if .Values.cron.enabled }}
+Scheduled runs: {{ .Values.cron.schedule }} (UTC). Each run stops at the shortlist pause; approve in the UI.
+{{- end }}
+{{- if eq .Values.env.APP_ENV "production" }}
+APP_ENV=production: the UI refuses to start without UI_PASSWORD in the Secret.
+{{- end }}
