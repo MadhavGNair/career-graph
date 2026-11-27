@@ -21,16 +21,21 @@ def _builders() -> dict[str, Callable[[], Any]]:
     from careergraph.graphs.job_search.graph import build_job_search_graph
     from careergraph.graphs.job_search.subgraphs.document_factory import build_document_factory
     from careergraph.graphs.job_search.subgraphs.research_company import build_research_company
+    from careergraph.graphs.tracker.graph import build_tracker_graph
+    from careergraph.graphs.tracker.subgraph import build_interview_prep
 
     return {
         "job_search": build_job_search_graph,
         "document_factory": build_document_factory,
         "research_company": build_research_company,
+        "tracker": build_tracker_graph,
+        "interview_prep": build_interview_prep,
     }
 
 
 TARGETS: list[tuple[Path, list[str]]] = [
     (GRAPH_README, ["job_search", "document_factory", "research_company"]),
+    (GRAPH_README.parents[1] / "tracker" / "README.md", ["tracker", "interview_prep"]),
     (REPO_ROOT / "README.md", ["job_search"]),
 ]
 

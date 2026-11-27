@@ -119,6 +119,8 @@ class Settings(BaseSettings):
     langsmith_api_key: SecretStr | None = None
     langsmith_project: str = "careergraph"
 
+    mock_interview_turns: int = Field(default=5, ge=1, le=20)
+
     demo_fabricate_job: str = "gh-nimbus-analytics-4001"
 
     @field_validator(

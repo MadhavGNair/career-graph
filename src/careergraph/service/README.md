@@ -21,6 +21,7 @@ flowchart LR
 | `resume(thread, value=None)` | generic `Command(resume=...)`, or continue after a halt |
 | `history(thread)` / `fork(thread, checkpoint, updates)` | time travel |
 | `run_profile()` / `run_jobs()` | partial graphs for `make profile` / `make jobs` |
+| `change_status(job, status)` / `answer_mock(thread, answer)` | tracker graph: validated transitions, interview prep, mock-interview pauses |
 | tracker + insights | `list_applications`, `set_status`, `skills_trend`, `usage_by_run`, `render` |
 
 Outcomes are plain dataclasses (`RunOutcome`: `waiting_shortlist`, `waiting_review`,

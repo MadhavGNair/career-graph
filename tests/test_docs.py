@@ -14,7 +14,7 @@ README_DIRS = [
     "src/careergraph/skills", "src/careergraph/retrieval", "src/careergraph/memory",
     "src/careergraph/security", "src/careergraph/sources", "src/careergraph/latex",
     "src/careergraph/persistence", "src/careergraph/graphs/job_search",
-    "src/careergraph/graphs/job_search/nodes", "src/careergraph/graphs/job_search/subgraphs",
+    "src/careergraph/graphs/job_search/nodes", "src/careergraph/graphs/job_search/subgraphs", "src/careergraph/graphs/tracker",
     "src/careergraph/evals",
 ]  # fmt: skip
 # Directories documented in later phases (P6 ui/tests, P7 evals/.github, P8 deploy).

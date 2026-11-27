@@ -72,6 +72,18 @@ def report(outcome: RunOutcome) -> None:
         console.print(f"[bold]Paused for document review.[/] thread: [cyan]{t}[/]")
         print_review(outcome.payload or {})
         console.print(f"Next: make review THREAD={t}   (or edit/regenerate in the UI)")
+    elif outcome.status == "waiting_mock_interview" and outcome.payload:
+        q = outcome.payload["question"]
+        turn, of = outcome.payload["turn"], outcome.payload["of"]
+        console.print(f"[bold]Mock interview {turn}/{of}[/] ({q['kind']})")
+        console.print(f"  {q['text']}")
+        if outcome.payload["story_hints"]:
+            console.print(
+                f"  [dim]Your STAR stories: {'; '.join(outcome.payload['story_hints'])}[/]"
+            )
+        console.print(
+            f'Next: careergraph interview answer {t} "<your answer>"   ("/stop" to finish)'
+        )
     elif outcome.status == "completed":
         console.print(f"[green]Completed[/] {t}\n{outcome.summary}")
     elif outcome.status == "halted_budget":
@@ -320,16 +332,20 @@ def tracker_list() -> None:
 
 @tracker_app.command("set")
 def tracker_set(job: str, status: str, note: str = "") -> None:
-    """Change status (validated transitions, e.g. ready -> applied)."""
-    from careergraph.domain.status import InvalidTransition
-
+    """Change status via the tracker graph (validated; "interview" starts prep + mock interview)."""
     with service() as svc:
-        try:
-            a = svc.set_status(job, status, note)
-        except (KeyError, InvalidTransition) as exc:
-            console.print(f"[red]{exc}[/]")
-            raise typer.Exit(1) from None
-        console.print(f"{a.job_id} -> {a.status}")
+        report(svc.change_status(job, status, note, on_event))
+
+
+interview_app = typer.Typer(help="Mock interview (started by `tracker set <job> interview`)")
+app.add_typer(interview_app, name="interview")
+
+
+@interview_app.command("answer")
+def interview_answer(thread: str, text: str) -> None:
+    """Answer the current question; "/stop" ends the interview."""
+    with service() as svc:
+        report(svc.answer_mock(thread, text, on_event))
 
 
 @app.command()

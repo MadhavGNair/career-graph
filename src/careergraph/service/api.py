@@ -33,6 +33,7 @@ from careergraph.graphs.job_search.graph import (
     build_jobs_graph,
     build_profile_graph,
 )
+from careergraph.graphs.tracker.graph import build_tracker_graph
 from careergraph.latex.compile import CompileResult
 from careergraph.latex.render import template_dirs, write_and_compile
 from careergraph.latex.sample import sample_documents
@@ -44,7 +45,14 @@ from careergraph.service.wiring import Services, build_services
 
 log = logging.getLogger(__name__)
 
-Status = Literal["waiting_shortlist", "waiting_review", "completed", "halted_budget", "failed"]
+Status = Literal[
+    "waiting_shortlist",
+    "waiting_review",
+    "waiting_mock_interview",
+    "completed",
+    "halted_budget",
+    "failed",
+]
 EventHandler = Callable[[str, dict[str, Any]], None]
 
 
@@ -106,6 +114,9 @@ class CareerGraphService:
         self.graph = build_job_search_graph().compile(
             checkpointer=persistence.checkpointer, store=persistence.store, name="job_search"
         )
+        self.tracker_graph = build_tracker_graph().compile(
+            checkpointer=persistence.checkpointer, store=persistence.store, name="tracker"
+        )
         self.jobs_graph = build_jobs_graph().compile(store=persistence.store, name="jobs")
         self.profile_graph = build_profile_graph().compile(name="profile")
 
@@ -135,6 +146,10 @@ class CareerGraphService:
             cfg["checkpoint_id"] = checkpoint_id
         return {"configurable": cfg}
 
+    def _graph_for(self, thread_id: str) -> Any:
+        run = self.repo.get_run(thread_id)
+        return self.tracker_graph if run is not None and run.kind == "tracker" else self.graph
+
     def _drive(
         self,
         thread_id: str,
@@ -143,9 +158,10 @@ class CareerGraphService:
         config: RunnableConfig | None = None,
     ) -> RunOutcome:
         config = config or self._config(thread_id)
+        graph = self._graph_for(thread_id)
         self.repo.upsert_run(thread_id, status="running", waiting_for="", note="")
         try:
-            for chunk in self.graph.stream(
+            for chunk in graph.stream(
                 graph_input, config, context=self.services, stream_mode="updates"
             ):
                 for node, update in chunk.items():
@@ -163,7 +179,7 @@ class CareerGraphService:
         return self._outcome(thread_id)
 
     def _outcome(self, thread_id: str) -> RunOutcome:
-        state = self.graph.get_state(self._config(thread_id))
+        state = self._graph_for(thread_id).get_state(self._config(thread_id))
         if state.interrupts:
             payload = dict(state.interrupts[0].value)
             kind = str(payload.get("type", "input"))
@@ -187,7 +203,7 @@ class CareerGraphService:
         Raises:
             ValueError: unknown/finished thread, or a value is missing/unexpected.
         """
-        state = self.graph.get_state(self._config(thread_id))
+        state = self._graph_for(thread_id).get_state(self._config(thread_id))
         if not state.values:
             raise ValueError(f"unknown thread {thread_id}")
         if not state.next:
@@ -201,7 +217,7 @@ class CareerGraphService:
 
     def pending_payload(self, thread_id: str) -> dict[str, Any] | None:
         """The interrupt payload a thread is waiting on, if any."""
-        state = self.graph.get_state(self._config(thread_id))
+        state = self._graph_for(thread_id).get_state(self._config(thread_id))
         return dict(state.interrupts[0].value) if state.interrupts else None
 
     def _expect(self, thread_id: str, kind: str) -> dict[str, Any]:
@@ -249,9 +265,13 @@ class CareerGraphService:
         """Threads waiting for input or resumable after a budget halt or failure."""
         out: list[PendingThread] = []
         for run in self.repo.list_runs():
-            if run.kind != "job_search" or run.status not in ("waiting", "halted_budget", "failed"):
+            if run.kind not in ("job_search", "tracker") or run.status not in (
+                "waiting",
+                "halted_budget",
+                "failed",
+            ):
                 continue
-            state = self.graph.get_state(self._config(run.thread_id))
+            state = self._graph_for(run.thread_id).get_state(self._config(run.thread_id))
             if not state.next:
                 continue
             if state.interrupts:
@@ -272,7 +292,9 @@ class CareerGraphService:
     def history(self, thread_id: str, limit: int = 100) -> list[CheckpointInfo]:
         """Checkpoints of a thread, newest first."""
         out: list[CheckpointInfo] = []
-        for snap in self.graph.get_state_history(self._config(thread_id), limit=limit):
+        for snap in self._graph_for(thread_id).get_state_history(
+            self._config(thread_id), limit=limit
+        ):
             meta = snap.metadata or {}
             out.append(
                 CheckpointInfo(
@@ -299,9 +321,10 @@ class CareerGraphService:
         The fork becomes the thread's latest branch; the old branch stays in history.
         """
         target = self._config(thread_id, checkpoint_id)
-        if not self.graph.get_state(target).values:
+        graph = self._graph_for(thread_id)
+        if not graph.get_state(target).values:
             raise ValueError(f"unknown checkpoint {checkpoint_id} for {thread_id}")
-        config = self.graph.update_state(target, updates, as_node=as_node) if updates else target
+        config = graph.update_state(target, updates, as_node=as_node) if updates else target
         return self._drive(thread_id, None, on_event, config=config)
 
     # ------------------------------------------------------------------ partial runs
@@ -366,6 +389,23 @@ class CareerGraphService:
     def list_applications(self) -> list[Application]:
         """Tracked applications."""
         return self.repo.list_applications()
+
+    def change_status(
+        self, job_id: str, status: str, note: str = "", on_event: EventHandler | None = None
+    ) -> RunOutcome:
+        """Run the tracker graph: validated transition; "interview" triggers interview prep and a
+        mock interview that pauses for each answer."""
+        thread_id = f"track-{datetime.now(UTC):%Y%m%d-%H%M%S}-{uuid.uuid4().hex[:6]}"
+        self.repo.upsert_run(thread_id, mode=self.cfg.settings.app_mode, kind="tracker")
+        payload = {"run_id": thread_id, "job_id": job_id, "new_status": status, "note": note}
+        return self._drive(thread_id, payload, on_event)
+
+    def answer_mock(
+        self, thread_id: str, answer: str, on_event: EventHandler | None = None
+    ) -> RunOutcome:
+        """Answer the current mock-interview question ("/stop" ends the interview)."""
+        self._expect(thread_id, "mock_interview")
+        return self.resume(thread_id, answer, on_event)
 
     def set_status(self, job_id: str, status: str, note: str = "") -> Application:
         """Validated status change (e.g. ready -> applied)."""
