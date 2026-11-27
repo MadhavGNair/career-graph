@@ -48,8 +48,8 @@ Never push. No live LLM calls. Never fabricate numbers (see CLAUDE.md).
 - [x] workflows: ci, security, release, live-eval, dependabot, PR template
 
 ## P8 Delivery
-- [ ] Dockerfile (+ latex target), compose (postgres, cron profiles), Helm chart, ArgoCD, k3s guide
-- [ ] docs: architecture, security, costs, live-mode, ADRs (>= 7)
+- [x] Dockerfile (+ latex target), compose (postgres, cron profiles), Helm chart, ArgoCD, k3s guide
+- [x] docs: architecture, security, costs, live-mode, ADRs (>= 7)
 
 ## P9 Extras (only if all green)
 - [ ] tracker graph, interview_prep, mock_interview

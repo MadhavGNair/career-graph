@@ -19,16 +19,7 @@ README_DIRS = [
 ]  # fmt: skip
 # Directories documented in later phases (P6 ui/tests, P7 evals/.github, P8 deploy).
 # PLAN.md P10 requires this to be empty.
-PENDING: set[str] = {
-    "ui",
-    "tests",
-    "deploy",
-    "deploy/helm/careergraph",
-    "deploy/argocd",
-    "deploy/k3s",
-    ".github",
-    "src/careergraph/evals",
-}
+PENDING: set[str] = set()
 SECTIONS = ["Purpose", "How it works", "Key files", "LangGraph concepts", "Configuration",
             "test", "Design decisions", "Gotchas"]  # fmt: skip
 
