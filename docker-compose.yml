@@ -1,0 +1,58 @@
+# Local deployment. Default: UI on http://127.0.0.1:8501 with SQLite in a named volume.
+#   docker compose up --build
+#   docker compose --profile cron up -d          # + scheduled `careergraph run`
+#   DATABASE_URL=postgresql://careergraph:careergraph@postgres:5432/careergraph \
+#     docker compose --profile postgres up       # + Postgres for app DB, checkpointer and Store
+# Your .env is optional (demo mode without it). Your profile files are mounted read-only.
+x-app: &app
+  build:
+    context: .
+    dockerfile: deploy/docker/Dockerfile
+    target: runtime
+  image: careergraph:local
+  env_file:
+    - path: .env
+      required: false
+  environment:
+    DATABASE_URL: ${DATABASE_URL:-}
+  volumes:
+    - data:/data
+    - outputs:/outputs
+    - ./config:/app/config:ro
+    - ./profiles/me:/app/profiles/me:ro
+
+services:
+  app:
+    <<: *app
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-}
+      UI_HOST: 0.0.0.0
+    ports:
+      - "127.0.0.1:8501:8501"   # loopback only; put a reverse proxy + UI_PASSWORD in front for remote use
+
+  cron:
+    <<: *app
+    profiles: [cron]
+    # Runs until the first pause; approve later in the UI. Interval in seconds (default daily).
+    command: ["sh", "-c", "while true; do careergraph run; sleep ${RUN_INTERVAL_SECONDS:-86400}; done"]
+
+  postgres:
+    image: postgres:17-alpine
+    profiles: [postgres]
+    environment:
+      POSTGRES_USER: careergraph
+      POSTGRES_PASSWORD: careergraph   # local only; change for anything else
+      POSTGRES_DB: careergraph
+    ports:
+      - "127.0.0.1:5432:5432"   # loopback only, so host-side `make` commands can use it
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U careergraph"]
+      interval: 5s
+      retries: 10
+
+volumes:
+  data:
+  outputs:
+  pgdata:

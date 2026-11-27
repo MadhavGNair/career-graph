@@ -1,0 +1,10 @@
+.git
+.venv
+.env
+profiles/me
+outputs
+data/*.db*
+data/cache
+**/__pycache__
+.pytest_cache
+.ruff_cache
